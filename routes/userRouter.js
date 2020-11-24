@@ -30,17 +30,19 @@ userRouter.post('/signup', async function(req, res){
             res.status(401).json({message: {
                 errMsg: "This user alreay exists",
                 errBdy: true}});
+        } else {
+            const newUser = new User({
+                username,
+                password,
+                displayName
+            });
+            
+            const savedUser = await newUser.save();
+            res.json(savedUser);
+           
         }
 
-        const newUser = new User({
-            username: username,
-            password: password,
-            displayName: displayName
-        });
         
-        const savedUser = await newUser.save();
-        res.json(savedUser);
-       
 
     }catch (err){
         res.status(500).json({message: {

@@ -1,19 +1,13 @@
-const { urlencoded } = require('express');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/userRouter');
 const User = require("./models/userModel");
 require('dotenv').config();
 
+app.use(cookieParser());
 app.use(express.json());
-app.use(urlencoded({extended: true}));
-
-const newUser = new User ({
-  username: "username",
-  password: "password",
-});
-newUser.save();
 
 
 //connect with Mongo DB
