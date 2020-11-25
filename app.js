@@ -26,4 +26,5 @@ app.use('/user', userRouter);
 
 //listen on port
 const Port = process.env.PORT || 5000;
-app.listen(Port, () => console.log(`the server has started on ${Port}`));
+app.listen(Port, () => console.log(`the server has started on ${Port}`)
+);

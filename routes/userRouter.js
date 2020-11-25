@@ -1,8 +1,19 @@
 const userRouter = require('express').Router();
 const User = require('../models/userModel');
-const bcrypt = require('bcrypt');
+const passport = require('passport');
+const passportConfig = require('../passport');
+const JWT = require('jsonwebtoken');
+const JobBoard = require("../models/jobboardModel");
+const Job = require("../models/jobModel");
 
 
+
+const signToken = userID =>{
+    return JWT.sign({
+        iss : "Jobseeker",
+        sub : userID
+    },`${process.env.JWT_SECRET}`,{expiresIn : "1 day"});
+}
 
 userRouter.post('/signup', async function(req, res){
     try {
@@ -42,15 +53,58 @@ userRouter.post('/signup', async function(req, res){
            
         }
 
-        
 
-    }catch (err){
+    } catch (err){
         res.status(500).json({message: {
             errMsg: "something went wrong",
             errBdy: true}});
       }
     
     
-})
+});
+
+userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
+    if(req.isAuthenticated()){
+       const {_id,username} = req.user; // added to request with compare passwor method
+       const token = signToken(_id);
+       res.cookie('access_token',token,{httpOnly: true, sameSite:true}); 
+       res.status(200).json({isAuthenticated : true, user : {username}});
+    }
+});
+
+userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
+    res.clearCookie('access_token');
+    res.json({user:{username : ""},success : true});
+});
+
+
+
+//====================jobBoard routes==========================//
+
+userRouter.post('/jobBoard',passport.authenticate('jwt',{session : false}), async (req,res)=>{
+    try {
+        const jobBoard = new JobBoard(req.body);
+        await jobBoard.save(err=>{
+            if(err)
+                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+            else{
+                req.user.jobBoards.push(jobBoard);
+                req.user.save(err=>{
+                    if(err)
+                        res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+                    else
+                        res.status(200).json({message : {msgBody : "Successfully created jobBoard", msgError : false}});
+                });
+            }
+        })
+    } catch (err){
+        res.status(500).json({message: {
+            errMsg: "something went wrong",
+            errBdy: true}});
+      }
+    
+   
+});
+
 
 module.exports = userRouter;

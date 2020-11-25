@@ -19,7 +19,7 @@ userSchema.pre('save', async function(next){
 
 
 
-userSchema.statics.comparePassword = function(password, callback){
+userSchema.methods.comparePassword = function(password, callback){
     bcrypt.compare(password, this.password, (err, isMatch) => {
         if(err){
             return callback(err);
