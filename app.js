@@ -18,11 +18,12 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("connected to database");
+  console.log("Connected to database");
 });
 
 
 app.use('/user', userRouter);
+
 
 //listen on port
 const Port = process.env.PORT || 5000;

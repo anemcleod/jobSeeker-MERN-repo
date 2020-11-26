@@ -12,7 +12,7 @@ const signToken = userID =>{
     return JWT.sign({
         iss : "Jobseeker",
         sub : userID
-    },`${process.env.JWT_SECRET}`,{expiresIn : "1 day"});
+    },"haha",{expiresIn : "24h"});
 }
 
 userRouter.post('/signup', async function(req, res){
@@ -65,7 +65,7 @@ userRouter.post('/signup', async function(req, res){
 
 userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
     if(req.isAuthenticated()){
-       const {_id,username} = req.user; // added to request with compare passwor method
+       const {_id,username} = req.user;
        const token = signToken(_id);
        res.cookie('access_token',token,{httpOnly: true, sameSite:true}); 
        res.status(200).json({isAuthenticated : true, user : {username}});
@@ -75,6 +75,10 @@ userRouter.post('/login',passport.authenticate('local',{session : false}),(req,r
 userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
     res.clearCookie('access_token');
     res.json({user:{username : ""},success : true});
+});
+
+userRouter.get('/test',passport.authenticate('jwt',{session : false}),(req,res)=>{
+    res.json({message: "works"});
 });
 
 
