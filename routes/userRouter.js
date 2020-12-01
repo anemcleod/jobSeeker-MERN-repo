@@ -94,6 +94,12 @@ userRouter.delete("/delete", passport.authenticate('jwt',{session : false}), asy
     }
   });
 
+  userRouter.get('/authenticated',passport.authenticate('jwt',{session : false}),(req,res)=>{
+    const {username} = req.user;
+    res.status(200).json({isAuthenticated : true, user : {username}});
+});
+
+
 
 
 //====================jobBoard routes==========================//
@@ -187,6 +193,21 @@ userRouter.delete("/jobs/:jobId", passport.authenticate('jwt',{session : false})
         const deletedJob = await Job.findByIdAndDelete(req.params.jobId);
         res.json(deletedJob).json(updatedJobBoard);
     } catch (err) {
+        res.status(500).json({message: {
+            msgBody: err.message, 
+            msgError: true
+        }})
+    }   
+});
+
+userRouter.get("/jobs", passport.authenticate('jwt',{session : false}), async (req, res) => {
+    try {
+        const jobs = await User.findById(req.user).populate({
+            path: 'jobBoards',
+            populate: {path: 'jobs'}
+        });
+        res.send(jobs);
+    }catch (err) {
         res.status(500).json({message: {
             msgBody: err.message, 
             msgError: true

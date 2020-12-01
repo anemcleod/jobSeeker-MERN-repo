@@ -3,7 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/userRouter');
-const User = require("./models/userModel");
+const searchRouter = require('./routes/searchRouter');
+
 require('dotenv').config();
 
 app.use(cookieParser());
@@ -23,6 +24,7 @@ db.once('open', function() {
 
 
 app.use('/user', userRouter);
+app.use('/search', searchRouter);
 
 
 //listen on port
