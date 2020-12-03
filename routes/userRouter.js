@@ -21,27 +21,31 @@ userRouter.post('/signup', async function(req, res){
         const {username, password, checkPassword, displayName} = req.body;
         
         if(!username || !password || !checkPassword){
-            res.status(401).json({message: {
-                                    errMsg: "not all fields have been entered",
-                                    errBdy: true}});
+            res.status(406).json({message: {
+                                    msgBody: "not all fields have been entered",
+                                    msgError: true}});
+            return;
         }
         if(password.length < 5){
-            res.status(401).json({message: {
-                errMsg: "password must be at least 5 characters",
-                errBdy: true}});
+            res.status(406).json({message: {
+                msgBody: "password must be at least 5 characters",
+                msgError: true}});
+            return;
         }
 
         if(password !== checkPassword){
-            res.status(401).json({message: {
-                errMsg: "Password and check password does not match",
-                errBdy: true}});
+            res.status(406).json({message: {
+                msgBody: "Password and check password does not match",
+                msgError: true}});
+            return;
         }
 
         const existingUser = await User.findOne({username: username});
         if(existingUser){
-            res.status(401).json({message: {
-                errMsg: "This user alreay exists",
-                errBdy: true}});
+            res.status(406).json({message: {
+                msgBody: "This user alreay exists",
+                msegError: true}});
+            return;
         } else {
             const newUser = new User({
                 username,
@@ -49,16 +53,22 @@ userRouter.post('/signup', async function(req, res){
                 displayName
             });
             
-            const savedUser = await newUser.save();
-            res.json(savedUser);
+        await newUser.save(err => {
+            if(err){
+                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+            } else {
+                res.status(201).json({message : {msgBody : "Account successfully created", msgError: false}});
+            }
+        });
+            
            
         }
 
 
     } catch (err){
         res.status(500).json({message: {
-            errMsg: "something went wrong",
-            errBdy: true}});
+            msgBody: "something went wrong",
+            msgError: true}});
       }
     
     
@@ -70,7 +80,7 @@ userRouter.post('/login',passport.authenticate('local',{session : false}),(req,r
        const token = signToken(_id);
        res.cookie('access_token',token,{httpOnly: true, sameSite:true}); 
        res.status(200).json({isAuthenticated : true, user : {username}});
-    }
+    } 
 });
 
 userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{

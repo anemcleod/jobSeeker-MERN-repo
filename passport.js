@@ -28,10 +28,8 @@ passport.use(new JwtStrategy({
                 return done(null,false);
         });
    } catch(err){
-    res.status(500).json({message: {
-        errMsg: "something went wrong",
-        errBdy: true}});
-  }
+    return done(err);
+   }
 }));
 
 // authenticated local strategy using username and password
@@ -50,9 +48,7 @@ passport.use(new LocalStrategy(async (username,password,done)=>{
             user.comparePassword(password,done);      
         });
     }catch(err){
-        res.status(500).json({message: {
-            errMsg: "something went wrong",
-            errBdy: true}});
-      }
+        return done(err);
+    }
     
 }));

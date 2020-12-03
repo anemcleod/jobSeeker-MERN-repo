@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
     jobBoards: [{type: mongoose.Schema.Types.ObjectId, ref: "JobBoard"}]
 });
 
+
+userSchema.virtual('initial').get(function() {
+    return this.displayName.charAt(0);
+});
+
 userSchema.pre('save', async function(next){
     if(!this.isModified("password")){
         return next();

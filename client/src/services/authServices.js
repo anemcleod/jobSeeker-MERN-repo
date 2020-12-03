@@ -1,7 +1,8 @@
 const AuthServices = {
     login : user => {
         console.log(user);
-        return fetch('http://localhost:5000/user/login',{
+        return fetch('/user/login',{
+            credentials: 'include',
             method : "post",
             body : JSON.stringify(user),
             headers : {
@@ -16,7 +17,7 @@ const AuthServices = {
         })
     },
     signup : user => {
-        return fetch('http://localhost:5000/user/signup', {
+        return fetch('/user/signup', {
             method : "post",
             body : JSON.stringify(user),
             headers : {
@@ -31,13 +32,13 @@ const AuthServices = {
         })
     },
     logout : () => {
-        return fetch('http://localhost:5000/user/logout')
+        return fetch('/user/logout')
                 .then(res => res.json())
                 .then(data => data);
     },
     //syncs front and back - checks if user is still logged in to server even if react app was closed
     isAuthenticated : () => {
-        return fetch('http://localhost:5000/user/authenticated')
+        return fetch('/user/authenticated')
                 .then(res=>{
                     if(res.status !== 401){
                         return res.json().then(data => data);
