@@ -76,16 +76,16 @@ userRouter.post('/signup', async function(req, res){
 
 userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
     if(req.isAuthenticated()){
-       const {_id,username} = req.user;
+       const {_id,username, displayName, initial} = req.user;
        const token = signToken(_id);
        res.cookie('access_token',token,{httpOnly: true, sameSite:true}); 
-       res.status(200).json({isAuthenticated : true, user : {username}});
+       res.status(200).json({isAuthenticated : true, user : {username, displayName, initial}});
     } 
 });
 
 userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
     res.clearCookie('access_token');
-    res.json({user:{username : ""},success : true});
+    res.json({user:{username : "", displayName : "", initial : ""},success : true});
 });
 
 userRouter.delete("/delete", passport.authenticate('jwt',{session : false}), async (req, res) => {
@@ -105,8 +105,8 @@ userRouter.delete("/delete", passport.authenticate('jwt',{session : false}), asy
   });
 
   userRouter.get('/authenticated',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username} = req.user;
-    res.status(200).json({isAuthenticated : true, user : {username : username}});
+    const {username, displayName, initial} = req.user;
+    res.status(200).json({isAuthenticated : true, user : {username : username, displayName : displayName, initial : initial}});
 });
 
 

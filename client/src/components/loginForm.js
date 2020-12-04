@@ -21,7 +21,6 @@ const LoginForm = ({history}) => {
             if(isAuthenticated){
                 authContext.setUser(user);
                 authContext.setIsAuthenticated(isAuthenticated);
-                history.push("/myjobsearch");
             }else {
                 console.log(message)
                 setMessage(message);

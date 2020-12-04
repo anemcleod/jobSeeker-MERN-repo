@@ -1,6 +1,5 @@
 const AuthServices = {
     login : user => {
-        console.log(user);
         return fetch('/user/login',{
             credentials: 'include',
             method : "post",
@@ -12,7 +11,7 @@ const AuthServices = {
             if(res.status !== 401){
                 return res.json().then(data => data);
             } else {
-                return { isAuthenticated : false, user : {username : ""}};
+                return { isAuthenticated : false, user : {username : "", displayName :"", initial : ""}};
             }       
         })
     },
@@ -27,7 +26,7 @@ const AuthServices = {
             if(res.status !== 401) {
                 return res.json().then(data => data);
             } else {
-                return { isAuthenticated : false, user : {username : ""}};
+                return { isAuthenticated : false, user : {username : "", displayName: "", initial : ""}};
             }    
         })
     },
@@ -43,7 +42,7 @@ const AuthServices = {
                     if(res.status !== 401){
                         return res.json().then(data => data);
                     } else {
-                        return { isAuthenticated : false, user : {username : ""}};
+                        return { isAuthenticated : false, user : {username : "", displayName : "", initial : ""}};
                     }
                 });
     }

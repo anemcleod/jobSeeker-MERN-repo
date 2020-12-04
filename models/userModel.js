@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-
+const opts = { toJSON: { virtuals: true } };
 const userSchema = new mongoose.Schema({
     username: {type: String, rquired: true, unique: true},
     displayName: {type: String, default: "there"},
     password:  {type: String, rquired: true, minlength: 5},
     jobBoards: [{type: mongoose.Schema.Types.ObjectId, ref: "JobBoard"}]
-});
+}, opts);
 
 
 userSchema.virtual('initial').get(function() {

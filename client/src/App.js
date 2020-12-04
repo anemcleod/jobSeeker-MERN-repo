@@ -5,7 +5,7 @@ import Home from './components/home';
 import Login from './components/login';
 import Navbar from './components/navbar'
 import MyJobSearch from './components/myjobsearch';
-import './style.sass';
+import './assets/style.sass';
 
 
 const App = () => {
