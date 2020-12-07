@@ -1,0 +1,41 @@
+import React, {useContext} from 'react';
+import {AuthContext} from '../context/AuthContext';
+import AuthServices from '../services/authServices';
+import {Link} from 'react-router-dom';
+
+
+
+const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
+    const {setUser, setIsAuthenticated} = useContext(AuthContext);
+    
+    const revealDelete = () => {
+        setShowDelete(!showDelete);
+    }
+    const logoutHandler = (e) => {
+        e.preventDefault();
+        AuthServices.logout().then(data => {
+            if(data.success){
+                setUser(data.user);;
+                setIsAuthenticated(false)
+            }
+        });
+    }
+
+    return (
+        <div className={menu ? "menu-container menu-container-expand" : "menu-container"}>
+             <button onClick={menuToggler} className="btn-menu"><div className="seeker-exit-icon "></div></button>
+             <div className="menu-btn-container">
+                <Link to='/'><button onClick={menuToggler} className="btn-basic btn-menu-options">home</button></Link>
+                <Link to='/myjobsearch'><button onClick={menuToggler} className="btn-basic btn-menu-options">my job search</button></Link>
+                <button className="btn-basic btn-menu-options" onClick={logoutHandler}>logout</button>
+                <button onClick={revealDelete} className={showDelete ? "btn-basic btn-menu-options btn-danger btn-danger-active" : "btn-basic btn-menu-options btn-danger"}>danger</button>
+                { showDelete ? <button className="btn-basic btn-menu-options btn-danger-active">delete account</button>
+                : null}
+                
+             </div>
+        </div>
+    )
+
+}
+
+export default Menu;

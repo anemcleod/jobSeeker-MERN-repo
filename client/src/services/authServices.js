@@ -11,7 +11,10 @@ const AuthServices = {
             if(res.status !== 401){
                 return res.json().then(data => data);
             } else {
-                return { isAuthenticated : false, user : {username : "", displayName :"", initial : ""}};
+                return { isAuthenticated : false, user : {username : "", displayName :"", initial : ""}, message: {
+                    msgBody : "Invalid credentials",
+                    msgError : true
+                }};
             }       
         })
     },

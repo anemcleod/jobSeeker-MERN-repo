@@ -3,7 +3,7 @@ import {AuthContext} from '../context/AuthContext';
 import AuthServices from '../services/authServices';
 import Message from './message';
 
-const LoginForm = ({history}) => {
+const LoginForm = () => {
     const [user, setUser] = useState({username: '', password: ''});
     const [message, setMessage] = useState(null);
     const authContext = useContext(AuthContext);

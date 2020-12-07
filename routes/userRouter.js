@@ -22,13 +22,13 @@ userRouter.post('/signup', async function(req, res){
         
         if(!username || !password || !checkPassword){
             res.status(406).json({message: {
-                                    msgBody: "not all fields have been entered",
+                                    msgBody: "Not all fields have been entered",
                                     msgError: true}});
             return;
         }
         if(password.length < 5){
             res.status(406).json({message: {
-                msgBody: "password must be at least 5 characters",
+                msgBody: "Password must be at least 5 characters",
                 msgError: true}});
             return;
         }
@@ -44,7 +44,7 @@ userRouter.post('/signup', async function(req, res){
         if(existingUser){
             res.status(406).json({message: {
                 msgBody: "This user alreay exists",
-                msegError: true}});
+                msgError: true}});
             return;
         } else {
             const newUser = new User({
@@ -67,7 +67,7 @@ userRouter.post('/signup', async function(req, res){
 
     } catch (err){
         res.status(500).json({message: {
-            msgBody: "something went wrong",
+            msgBody: "Something went wrong",
             msgError: true}});
       }
     
@@ -84,7 +84,7 @@ userRouter.post('/login',passport.authenticate('local',{session : false}),(req,r
 });
 
 userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    res.clearCookie('access_token');
+    res.clearCookie('access_token',{httpOnly: true, sameSite:true});
     res.json({user:{username : "", displayName : "", initial : ""},success : true});
 });
 

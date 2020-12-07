@@ -2,7 +2,7 @@ import React from 'react';
 
 const Message = ({message}) => {
     return (
-        <p className="error-message">{message.msgBody}</p>
+        <p className={message.msgError ? "error-message" : "success-message"}>{message.msgBody}</p>
     )
 }
 

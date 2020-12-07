@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import LoginForm from './loginForm';
 import SignupForm from './signupForm';
 
-const Home = ({history}) => {
+const Home = () => {
     const [newVisitor, setnewVisitor] = useState(false);
     const text = !newVisitor ? "signup" : "login";
     const formToggler = (e) => {
@@ -19,7 +19,7 @@ const Home = ({history}) => {
             <div className="form-container">
                 <img className="login-logo"src="/jobseeker.png" alt="jobseeker logo"/>
                 {
-                    !newVisitor ?<LoginForm history={history}/>:<SignupForm newVisitor={newVisitor} setnewVisitor={setnewVisitor}/>
+                    !newVisitor ?<LoginForm />:<SignupForm newVisitor={newVisitor} setnewVisitor={setnewVisitor}/>
                 }
             </div> 
         </div>
