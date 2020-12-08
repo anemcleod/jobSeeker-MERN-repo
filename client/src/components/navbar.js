@@ -14,7 +14,6 @@ const Navbar = () => {
             setShowDelete(false);
         }
         setMenu(!menu);
-        console.log(menu);
     }
 
     return (

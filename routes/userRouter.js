@@ -98,7 +98,7 @@ userRouter.delete("/delete", passport.authenticate('jwt',{session : false}), asy
           await JobBoard.findByIdAndDelete(board);
       }
       const deletedUser = await User.findByIdAndDelete(req.user);
-      res.json(deletedUser);
+      res.status(200).json({deleted: deletedUser, user:{username : "", displayName : "", initial : ""}, message : {msgBody: "We're sorry to see you go", msgError: false}});
     } catch (err) {
       res.status(500).json({message : {msgBody: err.message, msgError: true}});
     }

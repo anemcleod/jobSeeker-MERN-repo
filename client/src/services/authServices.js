@@ -48,6 +48,14 @@ const AuthServices = {
                         return { isAuthenticated : false, user : {username : "", displayName : "", initial : ""}};
                     }
                 });
+    },
+    deleteUser : () => {
+        return fetch('user/delete', { method : "delete"})
+            .then(res => { 
+                if(res.status !== 401){
+                    return res.json().then(data => data);
+                    }
+                })
     }
 
 };
