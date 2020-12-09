@@ -7,6 +7,7 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [searchResults, setSearchResults] = useState(null)
 
     useEffect(() => {
         AuthServices.isAuthenticated().then(data => {
@@ -18,7 +19,7 @@ export const AuthProvider = ({children}) => {
 
     return (
         <div>
-            <AuthContext.Provider value={{user, setUser, isAuthenticated, setIsAuthenticated, isLoaded}}>
+            <AuthContext.Provider value={{user, setUser, isAuthenticated, setIsAuthenticated, isLoaded, searchResults, setSearchResults }}>
                 {children}
             </AuthContext.Provider>
         </div>

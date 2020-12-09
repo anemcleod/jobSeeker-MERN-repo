@@ -16,7 +16,6 @@ const LoginForm = () => {
     const onSubmitHandler = e => {
         e.preventDefault();
         AuthServices.login(user).then(data => {
-            console.log(data);
             const {user, isAuthenticated, message} = data;
             if(isAuthenticated){
                 authContext.setUser(user);

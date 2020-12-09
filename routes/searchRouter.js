@@ -9,7 +9,7 @@ let baseUrl = `http://api.adzuna.com/v1/api/jobs/us/search/1?app_id=${appId}&app
 
 module.exports = searchRouter;
 
-searchRouter.get("/", passport.authenticate('jwt',{session : false}), async (req, res) => {
+searchRouter.post("/", passport.authenticate('jwt',{session : false}), async (req, res) => {
     try {
         const {keywords, location} = req.body;
         const request = await axios.get(`${baseUrl}&what=${keywords}&where=${location}`)

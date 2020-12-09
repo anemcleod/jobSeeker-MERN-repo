@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 
 
 const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
-    const {user, setUser, setIsAuthenticated} = useContext(AuthContext);
+    const {setUser, setIsAuthenticated} = useContext(AuthContext);
     
     const revealDelete = () => {
         setShowDelete(!showDelete);
