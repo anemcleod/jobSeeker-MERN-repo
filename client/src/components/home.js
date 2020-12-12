@@ -6,7 +6,7 @@ import SearchForm from './searchForm';
 
 
 const Home = () => {
-    const {isAuthenticated, user} = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
     
     return (
         <div className="home-container">

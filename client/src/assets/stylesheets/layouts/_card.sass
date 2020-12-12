@@ -1,0 +1,87 @@
+.job-container 
+    display: flex
+    flex-direction: column
+    background-color: white
+    width: 310px
+    border-radius: 20px
+    padding: 20px
+    margin: 25px 5px
+    .pin-job
+        align-self: end
+        padding: 0
+    .seeker-pin-tilt-icon
+        color: $grey-green
+        font-size: 25px
+    h2 
+        font-family: $body-font
+        font-weight: 700
+        text-transform: capitalize
+        margin: 0
+        margin-bottom: 5px
+        color: $black-green
+
+.job-container:first-of-type
+    margin-top: 0 
+
+.primary-info
+    color: $black-green
+    margin: -5px 0
+    font-size: 18px
+    font-weight: 400
+
+.secondary-info p, .tertiary-info p
+    color: $grey-green
+    width: fit-content
+
+.secondary-info span, .tertiary-info span
+    margin-right: 10px
+
+.secondary-info p:first-of-type span, .tertiary-info p:first-of-type span
+    margin-right: 5px
+
+.secondary-info, .tertiary-info
+    display: flex
+    justify-content: space-between
+    p
+        font-size: 14px
+.secondary-info 
+    p
+        margin-top: 5px
+    
+.job-description
+    font-weight: 300
+    overflow: hidden
+    margin-bottom: 40px
+    height: auto
+    max-height: 600px
+    transition: max-height 0.3s linear
+
+.hide-job-description
+    color: white
+    max-height: 0
+    margin-bottom: 0
+    
+
+.card-btn 
+    border: none
+    background-color: rgba(0,0,0,0)
+    width: max-content
+    .seeker-chevron-down-icon
+        font-size: 50px
+        transition: transform 0.3s linear
+        cursor: pointer
+    .rotate
+        transform: rotate(180deg)
+    
+.card-btn-expand
+    margin: -20px auto
+
+.job-board-container
+    display: flex
+    flex-direction: column
+    width: 400px
+    border-radius: 20px
+    background-color: $dark-green
+    min-height: 200px
+    position: relative
+    margin: 25px 5px

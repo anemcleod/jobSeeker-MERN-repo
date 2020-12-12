@@ -1,0 +1,32 @@
+.loading-container
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0 
+    right: 0
+    background-image: linear-gradient(to right, #d5f2da, #b2dabd, #8fc3a1, #6aac87, #42966f)
+    color: white
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    z-index: 200
+    
+
+.loading-message
+    font-family: $logo-font
+    font-size: 45px
+
+.seeker-spinner-icon
+    color: $dark-green
+    font-size: 100px
+
+.rotate-anim
+    animation: rotation 2s infinite linear
+
+@keyframes rotation 
+    from 
+        transform: rotate(0deg)
+    to 
+        transform: rotate(359deg)
+  

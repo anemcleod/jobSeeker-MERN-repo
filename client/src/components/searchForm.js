@@ -1,10 +1,12 @@
 import React, {useState, useContext} from 'react';
 import SearchServices from '../services/searchServices';
 import {AuthContext} from '../context/AuthContext';
+import { withRouter } from 'react-router-dom';
 
-const SearchForm = () => {
+
+const SearchForm = (props) => {
     const [searchParams, setSearchParams] = useState({keywords: '', location:''});
-    const {searchResults, setSearchResults} = useContext(AuthContext);
+    const {setIsLoaded, setSearchResults} = useContext(AuthContext);
     
     const onChangeHandler = e => {
         setSearchParams({...searchParams, [e.target.name] : e.target.value});
@@ -14,12 +16,17 @@ const SearchForm = () => {
     const submitHandler = e => {
         e.preventDefault();
         setSearchResults(null);
+        setIsLoaded({loading : true, loaded: false, message: 'searching for jobs'})
         SearchServices.search(searchParams).then(data => {
+            setIsLoaded({loading : false, loaded:true, message: ''})
             if(data){
                 const {results} = data
                 setSearchResults(results);
             }
         })
+        if(props.location.pathname === "/"){
+           props.history.push("/myjobsearch");
+        }
         
     }
 
@@ -48,4 +55,4 @@ const SearchForm = () => {
     )
 }
 
-export default SearchForm;
+export default withRouter(SearchForm);

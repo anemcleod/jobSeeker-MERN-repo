@@ -1,3 +1,6 @@
+.customScroller
+    margin-top: 30px
+
 .myjobsearch-container
     margin-top: 150px
     display: flex
@@ -7,6 +10,7 @@
     display: flex
     flex-direction: column
     align-items: center
+    height: 100vh
 
 @media screen and (min-width: 800px)
     .myjobsearch-container
@@ -14,5 +18,8 @@
         margin: 0 auto
         margin-top: 150px
         flex-wrap: wrap
-    .results-container, .board-container
+        justify-content: center
+    .results-container
+        width: 348px
+    .board-container
         width: 400px

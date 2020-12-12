@@ -1,20 +1,21 @@
 import React, {useContext} from 'react';
 import {AuthContext} from './context/AuthContext';
-import {BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import Home from './components/home';
 import Login from './components/login';
 import Navbar from './components/navbar'
 import MyJobSearch from './components/myjobsearch';
+import Loading from './components/loading';
 import './assets/style.sass';
 
 
 const App = () => {
-  const {isAuthenticated} = useContext(AuthContext);
-  
+  const {isLoaded, isAuthenticated} = useContext(AuthContext);
+
   return (
     <Router>
       { isAuthenticated ? <Navbar/> : null }
-      {/* <Route exact path="/" component={isAuthenticated ? Home : Login}/> */}
+      {isLoaded.loading ? <Loading /> : null}
       <Route exact path="/"> 
          { isAuthenticated ? <Home /> : <Login/>}
       </Route>
