@@ -216,7 +216,7 @@ userRouter.get("/jobs", passport.authenticate('jwt',{session : false}), async (r
             path: 'jobBoards',
             populate: {path: 'jobs'}
         });
-        res.send(jobs);
+        res.status(200).json(jobs);
     }catch (err) {
         res.status(500).json({message: {
             msgBody: err.message, 

@@ -54,6 +54,8 @@ const AuthServices = {
             .then(res => { 
                 if(res.status !== 401){
                     return res.json().then(data => data);
+                    }else {
+                        return {message: {msgBody: 'something went wrong', msgError: true}}
                     }
                 })
     }

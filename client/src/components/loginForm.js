@@ -21,7 +21,6 @@ const LoginForm = () => {
                 authContext.setUser(user);
                 authContext.setIsAuthenticated(isAuthenticated);
             }else {
-                console.log(message)
                 setMessage(message);
             }
         });

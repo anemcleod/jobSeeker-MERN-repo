@@ -6,14 +6,16 @@ import {Link} from 'react-router-dom';
 
 
 const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
-    const {setUser, setIsAuthenticated} = useContext(AuthContext);
+    const {setIsLoaded, setUser, setIsAuthenticated} = useContext(AuthContext);
     
     const revealDelete = () => {
         setShowDelete(!showDelete);
     }
     const logoutHandler = (e) => {
         e.preventDefault();
+        setIsLoaded({loading : true, loaded:false, message: 'Logging Out'})
         AuthServices.logout().then(data => {
+            setIsLoaded({loading : false, loaded:true, message: ''});
             if(data.success){
                 setUser(data.user);;
                 setIsAuthenticated(false)

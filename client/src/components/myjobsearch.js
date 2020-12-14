@@ -1,13 +1,28 @@
-import React, {useContext} from 'react';
-import SearchForm from './searchForm';
+import React, {useContext, useState, useEffect} from 'react';
 import {DragDropContext, Droppable } from "react-beautiful-dnd";
-import {AuthContext} from '../context/AuthContext';
-import Job from './job';
 import CustomScroller from 'react-custom-scroller';
 
+import JobServices from '../services/jobServices';
+import {AuthContext} from '../context/AuthContext';
+
+import Job from './job';
+import SearchForm from './searchForm';
+import JobBoard from './jobBoard';
 
 const MyJobSearch = () => {
+    const [myJobBoards, setMyJobBoards] = useState(null);
     const {searchResults} = useContext(AuthContext);
+    
+
+    useEffect(()=>{
+      JobServices.populate().then(data => {
+        if(data){
+          setMyJobBoards(data.jobBoards)
+        }
+      });
+    }, []);
+
+  
 
     const handleDrop = () => {
         console.log("item dropped");
@@ -15,14 +30,14 @@ const MyJobSearch = () => {
 
 
     return (
-        <DragDropContext onDragEnd={handleDrop}>
             <div className="myjobsearch-container">
                 <SearchForm />
-            
+            <DragDropContext onDragEnd={handleDrop}>
+                <CustomScroller className="customScroller">
                 <Droppable droppableId="resultsColumn">
               { (provided) => {
                 return (
-                  <CustomScroller className="customScroller">
+                 
                     <div className="results-container"
                           ref={provided.innerRef}
                           {...provided.droppableProps}>
@@ -35,13 +50,24 @@ const MyJobSearch = () => {
                     }
                     {provided.placeholder}
                     </div>
-                    </CustomScroller>
+                    
               )}}
             </Droppable>
-
-                <div className="board-container">boards here</div>
+            </CustomScroller>
+            <CustomScroller className="customScroller">
+                <div className="board-container">
+                  {
+                    myJobBoards ? myJobBoards.map((e)=>{
+                      return(
+                        <JobBoard key={e._id} myJobBoard={e}/>
+                      )
+                    }) : "loading"
+                  }
+                </div>
+            </CustomScroller>
+            </DragDropContext>
             </div>
-        </DragDropContext>
+        
     )
 }
 
