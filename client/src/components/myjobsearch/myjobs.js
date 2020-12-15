@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+mport React, {useState} from 'react';
 import {Draggable} from "react-beautiful-dnd";
 
 const Job = ({job, index}) => {

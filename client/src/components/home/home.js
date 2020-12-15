@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
-import {AuthContext} from '../context/AuthContext';
-import SearchForm from './searchForm';
+import {AuthContext} from '../../context/AuthContext';
+import SearchForm from '../searchForm';
 
 
 

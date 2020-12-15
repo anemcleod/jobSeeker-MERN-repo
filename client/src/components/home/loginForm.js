@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
-import {AuthContext} from '../context/AuthContext';
-import AuthServices from '../services/authServices';
+import {AuthContext} from '../../context/AuthContext';
+import AuthServices from '../../services/authServices';
 import Message from './message';
 
 const LoginForm = () => {
