@@ -27,7 +27,11 @@ const SearchForm = (props) => {
         if(props.location.pathname === "/"){
            props.history.push("/myjobsearch");
         }
-        
+
+        if(props.location.pathname === "/myjobsearch"){
+            props.showResultsHandler();
+         }
+       
     }
 
     return (

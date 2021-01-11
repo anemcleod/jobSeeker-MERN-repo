@@ -12,7 +12,7 @@ const Job = ({job, index}) => {
                     <button className="card-btn pin-job"><div className="seeker-pin-tilt-icon"></div></button>
                     
 
-                    <h2>{job.title.replace(/<.?strong>/g, '')}{index}</h2>
+                    <h2>{job.title.replace(/<.?strong>/g, '')}</h2>
                     <p className="primary-info">{job.company.display_name}</p>
                     
 

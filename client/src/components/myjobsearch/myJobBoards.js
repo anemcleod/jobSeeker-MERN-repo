@@ -4,7 +4,7 @@ import {DragDropContext } from "react-beautiful-dnd";
 import JobBoard from './jobBoard';
 
 
-const MyJobBoards = () => {
+const MyJobBoards = ({myJobBoards}) => {
 
     const handleDrop = () => {
         console.log("item dropped");
