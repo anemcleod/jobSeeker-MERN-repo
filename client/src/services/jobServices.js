@@ -43,6 +43,24 @@ const JobServices = {
         })
     },
 
+    updateBoardTitle : (jobBoardId, boardTitle) => {
+        return fetch(`/user/jobBoard/${jobBoardId}`, 
+         {  method: 'put',
+            body : JSON.stringify(boardTitle),
+            headers : {
+                'Content-Type' : 'application/json'
+            }
+        })
+        .then(res => { 
+            if(res.status !== 401){
+                return res.json().then(data => data);
+                } else {
+                    return {message: {msgBody: 'something went wrong', msgError: true}}
+                }
+            })
+
+    },
+
     deleteJob : (jobId) => {
         return fetch(`/user/jobs/${jobId}`, { method: 'delete'})
         .then(res => { 

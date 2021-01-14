@@ -36,17 +36,17 @@ const Nav = ({showSearch, showSearchHandler, showResults, showResultsHandler, sh
         <div className="myjobsearch-nav-container">
            <button 
                 onClick={showResultsHandler}
-                className={mobile ? `btn-basic btn-mobile ${showResults ? 'active': ''}` : `btn-basic ${showResults ? 'active': ''}`}>
+                className={mobile ? `btn-basic btn-mobile drop-shadow ${showResults ? 'active': ''}` : `btn-basic drop-shadow ${showResults ? 'active': ''}`}>
                 {mobile ? <div className="seeker-list-icon"></div> : 'Search Results'}
             </button> 
            <button 
                 onClick={showBoardsHandler} 
-                className={mobile ? `btn-basic btn-mobile ${showBoards ? 'active': ''}` : `btn-basic ${showBoards ? 'active': ''}`}>
+                className={mobile ? `btn-basic btn-mobile drop-shadow ${showBoards ? 'active': ''}` : `btn-basic drop-shadow ${showBoards ? 'active': ''}`}>
                 {mobile ? <div className="seeker-pin-tilt-icon"></div> : 'My Job Boards'}
             </button>
            <button 
                 onClick={showSearchHandler} 
-                className={mobile ? `btn-basic btn-mobile ${showSearch ? 'active': ''}` : `btn-basic ${showSearch ? 'active': ''}`}>
+                className={mobile ? `btn-basic btn-mobile drop-shadow ${showSearch ? 'active': ''}` : `btn-basic drop-shadow ${showSearch ? 'active': ''}`}>
                 {mobile ? <div className="seeker-search-icon"></div> : 'Search'}
             </button>
         </div>

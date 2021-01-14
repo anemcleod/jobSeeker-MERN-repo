@@ -1,7 +1,25 @@
+import {useState} from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import Job from './job';
+import Menu from './boardMenu';
+import PinnedJob from './pinnedJob';
 
 const JobBoard = ({myJobBoard}) => {
+
+    const [menu, setMenu] = useState(false);
+    const [showDeleteBoard, setShowDeleteBoard] = useState(false);
+    const [boardTitle, setBoardTitle] = useState({title: myJobBoard.title});
+    
+    const menuToggler = () => {
+        if(showDeleteBoard) {
+            setShowDeleteBoard(false);
+        }
+        setMenu(!menu);
+    }
+
+    const saveChangesHandler = e => {
+        e.preventDefault();
+        console.log("saved")
+    }
 
     return (
         <Droppable droppableId={myJobBoard._id}>
@@ -11,17 +29,31 @@ const JobBoard = ({myJobBoard}) => {
                             <div className="job-board-container drop-shadow"
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}>
-                                <button className="board-menu" ><div className="seeker-elipsis-icon" ></div></button>
-                                <h2 className="board-title" >{myJobBoard.title}</h2>
-                                {/* <input type="text" name="" id="" placeholder="board title" className="input-basic"/> */}
+
+                                <Menu menuToggler={menuToggler} 
+                                      menu={menu} 
+                                      showDeleteBoard={showDeleteBoard} 
+                                      setShowDeleteBoard={setShowDeleteBoard}
+                                      boardTitle={boardTitle} 
+                                      setBoardTitle={setBoardTitle}
+                                      boardId={myJobBoard._id}
+                                      />
+                                <button
+                                    onClick={menuToggler} 
+                                    className="board-menu" >
+                                        <div className="seeker-elipsis-icon" ></div>
+                                </button>
+
+                                <h2 className="board-title" >{boardTitle.title}</h2>
+                             
                                 <div className="cards-container">
-                                {/* {
+                                {
                                     myJobBoard.jobs.map((e, i )=> {
                                         return (
-                                        <Job key={e._id} job={myJobBoard.jobs[i]} index={i}/>
+                                        <PinnedJob key={e._id} job={myJobBoard.jobs[i]} index={i}/>
                                         )
                                     })
-                                    } */}
+                                    }
                                 {provided.placeholder}
                                 </div>   
                             </div>

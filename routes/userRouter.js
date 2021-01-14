@@ -139,6 +139,22 @@ userRouter.post('/jobBoard',passport.authenticate('jwt',{session : false}), asyn
    
 });
 
+userRouter.put("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session : false}), async (req, res) => {
+    try {
+        await JobBoard.findOneAndUpdate({_id: req.params.jobBoardId}, {title: req.body.title}, {new: true}, (err, doc) => {
+            if(!err){
+                res.status(200).json({doc});
+            }
+
+        });
+        
+    } catch (err) {
+      res.status(500).json({message : {
+          msgBody: err.message, 
+          msgError: true}});
+    }
+  });
+
 userRouter.delete("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session : false}), async (req, res) => {
     try {
       const jobBoard = await JobBoard.findById(req.params.jobBoardId);
@@ -157,6 +173,9 @@ userRouter.delete("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session 
           msgError: true}});
     }
   });
+
+
+
 
 // =========================== job routes ============================== //
 
