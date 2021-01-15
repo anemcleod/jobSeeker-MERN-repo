@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 import JobServices from '../../services/jobServices';
+
 
 import SearchForm from '../searchForm';
 import MyJobBoards from './myJobBoards';
@@ -8,21 +9,19 @@ import SearchResults from './searchResults';
 import Nav from './nav';
 
 const MyJobSearch = () => {
-    const [myJobBoards, setMyJobBoards] = useState(null);
+    
     const [showSearch, setShowSearch] = useState(false);
     const [showResults, setShowResults] = useState(true);
     const [showBoards, setShowBoards] = useState(false);
-    
-
-    useEffect(()=>{
-      JobServices.populate().then(data => {
-        if(data){
-          setMyJobBoards(data.jobBoards)
-        }
-      });
-    }, []);
-
-  
+   
+    const addBoard = (e) =>{
+        e.preventDefault();
+        JobServices.createJobBoard({title: "Job Board"}).then(data => {
+            if(data) {
+                console.log(data);
+            } 
+        });
+    }
     const showResultsHandler = (e) =>{
       if(e) {
         e.preventDefault();
@@ -57,12 +56,13 @@ const MyJobSearch = () => {
                 showResults={showResults}
                 showSearchHandler={ showSearchHandler}
                 showBoards={showBoards}
-                showBoardsHandler={showBoardsHandler}/>
+                showBoardsHandler={showBoardsHandler}
+                addBoard={addBoard}/>
 
             {showSearch ? <SearchForm showResultsHandler={showResultsHandler}/> : null} 
             {showResults ? <SearchResults/>  : null} 
-            {showBoards ? <MyJobBoards myJobBoards={myJobBoards}/> : null} 
-                  
+            {showBoards ? <MyJobBoards/> : null} 
+                
         </div>
       
     )

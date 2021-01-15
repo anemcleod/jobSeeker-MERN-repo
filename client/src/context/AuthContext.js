@@ -8,7 +8,6 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoaded, setIsLoaded] = useState({loading: false, loaded: false, message: ''});
     const [searchResults, setSearchResults] = useState(null)
-    const [userData, setUserData] = useState(false);
 
     useEffect(() => {
         setIsLoaded({loading : true, loaded: false, message: ''})
@@ -17,12 +16,12 @@ export const AuthProvider = ({children}) => {
             setIsAuthenticated(data.isAuthenticated);
             setIsLoaded({loading: false, loaded: true, message: ''});
         })
-    }, [userData]);
+    }, []);
 
 
     return (
         <div>
-            <AuthContext.Provider value={{user, setUser, isAuthenticated, setIsAuthenticated, isLoaded, setIsLoaded, searchResults, setSearchResults, userData, setUserData }}>
+            <AuthContext.Provider value={{user, setUser, isAuthenticated, setIsAuthenticated, isLoaded, setIsLoaded, searchResults, setSearchResults }}>
                 {children}
             </AuthContext.Provider>
         </div>

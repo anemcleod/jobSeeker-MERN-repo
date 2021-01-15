@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import Menu from './boardMenu';
 import PinnedJob from './pinnedJob';
 
-const JobBoard = ({myJobBoard}) => {
+const JobBoard = ({myJobBoard, updateBoard, setUpdateBoard}) => {
 
     const [menu, setMenu] = useState(false);
     const [showDeleteBoard, setShowDeleteBoard] = useState(false);
@@ -16,10 +16,6 @@ const JobBoard = ({myJobBoard}) => {
         setMenu(!menu);
     }
 
-    const saveChangesHandler = e => {
-        e.preventDefault();
-        console.log("saved")
-    }
 
     return (
         <Droppable droppableId={myJobBoard._id}>
@@ -37,6 +33,8 @@ const JobBoard = ({myJobBoard}) => {
                                       boardTitle={boardTitle} 
                                       setBoardTitle={setBoardTitle}
                                       boardId={myJobBoard._id}
+                                      updateBoard={updateBoard} 
+                                      setUpdateBoard={setUpdateBoard}
                                       />
                                 <button
                                     onClick={menuToggler} 

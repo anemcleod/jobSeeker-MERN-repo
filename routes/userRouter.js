@@ -166,7 +166,7 @@ userRouter.delete("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session 
 
       const deletedJobBoard = await JobBoard.findByIdAndDelete(req.params.jobBoardId);
       const UpdatedUser = await User.updateOne({"_id" : req.user } ,{ "$pull": {  "jobBoards": req.params.jobBoardId } }, { multi: true });
-      res.json(deletedJobBoard).json(UpdatedUser);
+      res.status(200).json({"deleted":deletedJobBoard,"updated":UpdatedUser });
     } catch (err) {
       res.status(500).json({message : {
           msgBody: err.message, 
@@ -220,7 +220,7 @@ userRouter.delete("/jobs/:jobId", passport.authenticate('jwt',{session : false})
         const job = await Job.findById(req.params.jobId);
         const updatedJobBoard = await JobBoard.findOneAndUpdate({"_id": job.jobBoardId}, { "$pull": {  "jobs": req.params.jobId } }, { multi: true });
         const deletedJob = await Job.findByIdAndDelete(req.params.jobId);
-        res.json(deletedJob).json(updatedJobBoard);
+        res.status(200).json(deletedJob).json(updatedJobBoard);
     } catch (err) {
         res.status(500).json({message: {
             msgBody: err.message, 

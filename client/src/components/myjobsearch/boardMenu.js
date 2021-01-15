@@ -1,10 +1,8 @@
-import React, {useContext} from 'react';
+
 import JobServices from '../../services/jobServices';
-import {AuthContext} from '../../context/AuthContext'
 
-
-const Menu = ({menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitle, setBoardTitle, boardId}) => {
-    const {setUserData, userData} = useContext(AuthContext);
+const Menu = ({menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitle, setBoardTitle, boardId,  updateBoard, setUpdateBoard}) => {
+    
     
     const revealDelete = (e) => {
         e.preventDefault();
@@ -15,7 +13,7 @@ const Menu = ({menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitl
         e.preventDefault();
         JobServices.deleteJobBoard(boardId).then(data => {
             if(data){
-                setUserData(!userData);
+                setUpdateBoard(!updateBoard);
             }
         });
     }

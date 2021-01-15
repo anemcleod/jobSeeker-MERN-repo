@@ -27,7 +27,7 @@ const JobServices = {
     },
 
     createJobBoard : (jobBoard) => {
-        return fetch('/user/jobs', {
+        return fetch('/user/jobBoard', {
             method: 'post',
             body : JSON.stringify(jobBoard),
             headers : {
