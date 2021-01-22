@@ -43,7 +43,7 @@ const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
                 <Link to='/'><button onClick={menuToggler} className="btn-basic btn-menu-options">home</button></Link>
                 <Link to='/myjobsearch'><button onClick={menuToggler} className="btn-basic btn-menu-options">my job search</button></Link>
                 <button className="btn-basic btn-menu-options" onClick={logoutHandler}>logout</button>
-                <button onClick={revealDelete} className={showDelete ? "btn-basic btn-menu-options btn-danger btn-danger-active" : "btn-basic btn-menu-options btn-danger"}>danger</button>
+                <button onClick={revealDelete} className={showDelete ? "btn-basic btn-menu-options btn-danger btn-danger-active" : "btn-basic btn-menu-options btn-danger"}>{showDelete ? "cancel" : "danger"}</button>
                 { showDelete ? <button onClick={deleteAccount} className="btn-basic btn-menu-options btn-danger-active">delete account</button>
                 : null}
                 

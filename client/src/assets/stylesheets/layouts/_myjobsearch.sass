@@ -1,17 +1,18 @@
 .myjobsearch-container
+    margin: 0 auto
     margin-top: 80px
     display: flex
     flex-direction: column
     width: max-content
+    
 
 .myjobsearch-nav-container
     width: max-content
     position: -webkit-sticky /* Safari */
     position: sticky
     top: 0
-    z-index: 100
-    .icon-rotate
-        transform: rotate(45deg)
+    z-index: 20
+    
 
 
 .btn-mobile
@@ -27,6 +28,29 @@
 .results-container
     max-width: 760px
 
+.btn-add-board-container
+    display: flex
+    justify-content: center
+    width: 340px
+.btn-add-board
+    width: 100px
+    height: 100px
+    border-radius: 50px
+    cursor: pointer
+    background-color: rgba($dark-green,0.8)
+    border: none
+    color: rgba($black-green,0.6)
+    font-size: 25px
+    &:hover
+        transform: scale(1.1)
+        filter: brightness(110%)
+    .icon-rotate
+        transform: rotate(45deg)
+
+
+@media screen and (min-width: 500px)
+    .btn-add-board-container
+            width: 400px
 
 @media screen and (min-width: 800px)
     .myjobsearch-container
@@ -35,6 +59,6 @@
     .results-container, .board-container
         flex-direction: row
 
-
-
-    
+@media screen and (min-width: 850px)
+    .myjobsearch-container
+        min-width: 760px

@@ -1,15 +1,35 @@
 import React, {useState} from 'react';
+import {Draggable} from "react-beautiful-dnd";
 
-const PinnedJob = ({job, index}) => {
+
+const PinnedJob = ({job, index, deleteJob, setDeleteJob}) => {
     const [expand, setExpand] = useState(false);
 
     const toggleDescription = () => {
         setExpand(!expand);
     } 
 
+    const openDeleteJobHandler = (e) => {
+        e.preventDefault();
+        setDeleteJob({showDeleteJob: true,
+        selectedJob: job._id});  
+    }
+
     return (
-            <div className="job-container drop-shadow">
-                    <button className="card-btn pin-job"><div className="seeker-delete-icon"></div></button>
+
+        <Draggable draggableId={job._id} index={index}>
+            {
+                (provided) => {
+                    return (
+                <div className="job-container drop-shadow"
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                >
+                    <button onClick={openDeleteJobHandler}
+                            className="card-btn pin-job">
+                        <div className="seeker-delete-icon"></div>
+                    </button>
                     
 
                     <h2>{job.title.replace(/<.?strong>/g, '')}</h2>
@@ -24,7 +44,7 @@ const PinnedJob = ({job, index}) => {
 
                     <div className="tertiary-info">
                         <p>{job.date.replace(/T.*/g, '')}</p>
-                       <a target="_blank" href={job.link}><p>via link</p></a>
+                       <a target="_blank"  rel="noreferrer" href={job.link}><p>via link</p></a>
                     </div>
                     
 
@@ -34,9 +54,10 @@ const PinnedJob = ({job, index}) => {
                     
                     <button onClick={toggleDescription}className="card-btn card-btn-expand"><div className={expand ? "seeker-chevron-down-icon rotate" : "seeker-chevron-down-icon"}></div></button>
             </div>
-    )
-
-
+            )}
+        }
+    </Draggable>
+)
 }
 
 export default  PinnedJob;

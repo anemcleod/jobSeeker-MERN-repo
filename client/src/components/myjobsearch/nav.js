@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 
-const Nav = ({showSearch, showSearchHandler, showResults, showResultsHandler, showBoards, showBoardsHandler, addBoard}) => {
+const Nav = ({showSearch, showSearchHandler, showResults, showResultsHandler, showBoards, showBoardsHandler}) => {
 
     const [mobile, setMobile] = useState(false);
     const [width, setWidth] = useState(window.innerWidth);
@@ -44,14 +44,7 @@ const Nav = ({showSearch, showSearchHandler, showResults, showResultsHandler, sh
                 className={mobile ? `btn-basic btn-mobile drop-shadow ${showBoards ? 'active': ''}` : `btn-basic drop-shadow ${showBoards ? 'active': ''}`}>
                 {mobile ? <div className="seeker-pin-tilt-icon"></div> : 'My Job Boards'}
             </button>
-            {
-                showBoards ? (
-                <button 
-                onClick={addBoard} 
-                className="btn-basic btn-mobile drop-shadow active">
-                    <div className="seeker-exit-icon icon-rotate"></div>
-                </button> ) : null
-            }
+        
            <button 
                 onClick={showSearchHandler} 
                 className={mobile ? `btn-basic btn-mobile drop-shadow ${showSearch ? 'active': ''}` : `btn-basic drop-shadow ${showSearch ? 'active': ''}`}>

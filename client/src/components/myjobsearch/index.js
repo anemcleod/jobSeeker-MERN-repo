@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 
-import JobServices from '../../services/jobServices';
-
 
 import SearchForm from '../searchForm';
 import MyJobBoards from './myJobBoards';
@@ -14,14 +12,7 @@ const MyJobSearch = () => {
     const [showResults, setShowResults] = useState(true);
     const [showBoards, setShowBoards] = useState(false);
    
-    const addBoard = (e) =>{
-        e.preventDefault();
-        JobServices.createJobBoard({title: "Job Board"}).then(data => {
-            if(data) {
-                console.log(data);
-            } 
-        });
-    }
+   
     const showResultsHandler = (e) =>{
       if(e) {
         e.preventDefault();
@@ -56,8 +47,7 @@ const MyJobSearch = () => {
                 showResults={showResults}
                 showSearchHandler={ showSearchHandler}
                 showBoards={showBoards}
-                showBoardsHandler={showBoardsHandler}
-                addBoard={addBoard}/>
+                showBoardsHandler={showBoardsHandler}/>
 
             {showSearch ? <SearchForm showResultsHandler={showResultsHandler}/> : null} 
             {showResults ? <SearchResults/>  : null} 

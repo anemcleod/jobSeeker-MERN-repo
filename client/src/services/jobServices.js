@@ -61,6 +61,23 @@ const JobServices = {
 
     },
 
+    moveJob : (jobId, oldJobBoardId, newJobBoardId) => {
+        return fetch(`/user/jobs/${jobId}`,
+        {  method: 'put',
+            body : JSON.stringify({"oldJobBoardId":oldJobBoardId,
+                                    "newJobBoardId": newJobBoardId}),
+            headers : {
+                'Content-Type' : 'application/json'
+            }
+        }).then(res => {
+            if(res.status !== 401){
+                return res.json().then(data => data);
+                } else {
+                    return {message: {msgBody: 'something went wrong', msgError: true}}
+                }
+        })
+    },
+
     deleteJob : (jobId) => {
         return fetch(`/user/jobs/${jobId}`, { method: 'delete'})
         .then(res => { 

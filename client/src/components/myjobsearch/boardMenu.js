@@ -47,8 +47,8 @@ const Menu = ({menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitl
                     className="btn-basic btn-menu-options btn-board">
                     save changes
                 </button>
-                <button onClick={revealDelete} className={showDeleteBoard ? "btn-basic btn-menu-options btn-board btn-danger-active" : "btn-basic btn-menu-options btn-board"}>danger</button>
-                { showDeleteBoard ? <button onClick={deleteBoard} className="btn-basic btn-menu-options btn-danger-active">delete board</button>
+                <button onClick={revealDelete} className={showDeleteBoard ? "btn-basic btn-menu-options btn-board btn-danger-active" : "btn-basic btn-menu-options btn-board"}>{showDeleteBoard ? "cancel" : "delete board"}</button>
+                { showDeleteBoard ? <button onClick={deleteBoard} className="btn-basic btn-menu-options btn-danger-active">I'm sure</button>
                 : null}
             </form>
         </div>

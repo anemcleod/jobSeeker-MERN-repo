@@ -143,7 +143,7 @@ userRouter.put("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session : f
     try {
         await JobBoard.findOneAndUpdate({_id: req.params.jobBoardId}, {title: req.body.title}, {new: true}, (err, doc) => {
             if(!err){
-                res.status(200).json({doc});
+                res.status(200);
             }
 
         });
@@ -214,6 +214,32 @@ userRouter.post("/jobs", passport.authenticate('jwt',{session : false}), async (
         }})
     }
 });
+
+userRouter.put("/jobs/:jobId", passport.authenticate('jwt',{session : false}), async (req, res) => {
+    try {
+        await JobBoard.findOneAndUpdate({_id: req.body.oldJobBoardId}, { "$pull": {  "jobs": req.params.jobId } }, { multi: true });
+        await Job.findOneAndUpdate({_id: req.params.jobId}, {jobBoardId: req.body.newJobBoardId}, {new: true}, async (err, doc) => {
+            if(err){
+                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});;
+            } else{
+                const jobBoard = await JobBoard.findById(doc.jobBoardId);
+                jobBoard.jobs.push(doc);
+                await jobBoard.save(err=>{
+                    if(err)
+                        res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+                    else
+                        res.status(200).json({message : {msgBody : "Successfully moved job", msgError : false}});
+                })
+            }
+
+        });
+        
+    } catch (err) {
+      res.status(500).json({message : {
+          msgBody: err.message, 
+          msgError: true}});
+    }
+  });
 
 userRouter.delete("/jobs/:jobId", passport.authenticate('jwt',{session : false}), async (req, res) => {
     try {
