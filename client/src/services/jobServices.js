@@ -61,11 +61,12 @@ const JobServices = {
 
     },
 
-    moveJob : (jobId, oldJobBoardId, newJobBoardId) => {
+    moveJob : (jobId, oldJobBoardId, newJobBoardId, index) => {
         return fetch(`/user/jobs/${jobId}`,
         {  method: 'put',
             body : JSON.stringify({"oldJobBoardId":oldJobBoardId,
-                                    "newJobBoardId": newJobBoardId}),
+                                    "newJobBoardId": newJobBoardId,
+                                    "destinationIndex" : index}),
             headers : {
                 'Content-Type' : 'application/json'
             }

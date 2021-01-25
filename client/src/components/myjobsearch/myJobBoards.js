@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {DragDropContext } from "react-beautiful-dnd";
 
 import {AuthContext} from '../../context/AuthContext';
@@ -7,65 +7,77 @@ import JobServices from '../../services/jobServices';
 import DeleteJob from './deleteJob';
 
 
-const MyJobBoards = () => {
-    
-   const [myJobBoards, setMyJobBoards] = useState(null);
-   const [updateBoard, setUpdateBoard] = useState(false);
-   const [deleteJob, setDeleteJob] = useState({
-                                                showDeleteJob: false,
-                                                selectedJob: ""
-                                              })   
-   const {setIsLoaded} = useContext(AuthContext);
 
-   const addBoard = (e) =>{
+const MyJobBoards = () => {
+   const {myJobBoards, setMyJobBoards} = useContext(AuthContext);
+    
+   
+  const addBoard = (e) =>{
     e.preventDefault();
     JobServices.createJobBoard({title: "Job Board"}).then(data => {
         if(data) {
-            console.log(data);
-        } 
-        setUpdateBoard(!updateBoard);
-    });
+            setMyJobBoards(prevState => {
+              let copy = [...prevState]
+              copy.push({
+                _id: data.id,
+                title: "Job Board",
+                jobs: []
+              });
+                return copy;
+            });
+        }
+  });
 }
     
-   useEffect(()=>{
-    setIsLoaded({loading : true, loaded: false, message: 'loading boards'})
-    JobServices.populate().then(data => {
-      setIsLoaded({loading : false, loaded:true, message: ''});
-      if(data){
-        setMyJobBoards(data.jobBoards)
-        console.log(data.jobBoards)
-      }
-    });
-  }, [setIsLoaded, updateBoard]);
-
     const handleDrop = (e) => {
+    
       if(!e.destination){
         return
       }
       if(e.source.index === e.destination.index && e.source.droppableId === e.destination.droppableId){
         return
       }
+      
+        setMyJobBoards(prevState => {
+          let copy = [...prevState];
+          let originIndex;
+          let destinationIndex;
+          let selectedJob;
 
-      JobServices.moveJob(e.draggableId, e.source.droppableId, e.destination.droppableId)
-      .then(data =>{
-        console.log(data);
-        setUpdateBoard(!updateBoard);
-      } )
-    }
+          for(let i = 0; i < copy.length; i++){
+            if(copy[i]._id === e.source.droppableId){
+               originIndex = i;
+            }
+          }
+          for(let k = 0; k < copy.length; k++){
+            if(copy[k]._id === e.destination.droppableId){
+               destinationIndex = k;
+            }
+          }
+
+          selectedJob = copy[originIndex].jobs.splice(e.source.index,1);
+          copy[destinationIndex].jobs.splice(e.destination.index, 0, selectedJob[0]);
+          return copy;
+        });
+
+        JobServices.moveJob(e.draggableId, e.source.droppableId, e.destination.droppableId, e.destination.index)
+        .then(data =>{
+          console.log(data);
+        })
+      
+  }
 
     return (
         <DragDropContext onDragEnd={handleDrop}>
             
-            <DeleteJob deleteJob={deleteJob}
-                       setDeleteJob={setDeleteJob}/>
+            <DeleteJob />
 
             <div className="board-container minimized">
                     {
                       myJobBoards ? myJobBoards.map((e)=>{
-                        return(
-                          <JobBoard key={e._id} myJobBoard={e} updateBoard={updateBoard} 
-                          setUpdateBoard={setUpdateBoard} deleteJob={deleteJob}
-                          setDeleteJob={setDeleteJob}/>
+                        return (
+                          <JobBoard key={e._id} 
+                                    myJobBoard={e}/>
                         )
                       }) : null
                     }

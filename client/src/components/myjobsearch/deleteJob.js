@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import JobServices from '../../services/jobServices';
 
-const DeleteJob = ({deleteJob, setDeleteJob}) => {
+import {AuthContext} from '../../context/AuthContext';
+
+const DeleteJob = () => {
+
+    const {deleteJob, setDeleteJob} = useContext(AuthContext);
    
     const exitDeleteJobhandler = (e) => {
         if(e) {

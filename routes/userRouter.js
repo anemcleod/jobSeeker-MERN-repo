@@ -126,7 +126,8 @@ userRouter.post('/jobBoard',passport.authenticate('jwt',{session : false}), asyn
                     if(err)
                         res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
                     else
-                        res.status(200).json({message : {msgBody : "Successfully created jobBoard", msgError : false}});
+                        res.status(200).json({message : {msgBody : "Successfully created jobBoard", msgError : false},
+                        id :  jobBoard._id});
                 });
             }
         })
@@ -223,7 +224,7 @@ userRouter.put("/jobs/:jobId", passport.authenticate('jwt',{session : false}), a
                 res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});;
             } else{
                 const jobBoard = await JobBoard.findById(doc.jobBoardId);
-                jobBoard.jobs.push(doc);
+                jobBoard.jobs.splice(req.body.destinationIndex, 0, doc);
                 await jobBoard.save(err=>{
                     if(err)
                         res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});

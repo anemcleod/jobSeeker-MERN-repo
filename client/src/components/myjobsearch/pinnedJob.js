@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Draggable} from "react-beautiful-dnd";
+import {AuthContext} from '../../context/AuthContext';
 
 
-const PinnedJob = ({job, index, deleteJob, setDeleteJob}) => {
+const PinnedJob = ({job, index}) => {
+    
+    const {setDeleteJob} = useContext(AuthContext);
     const [expand, setExpand] = useState(false);
 
     const toggleDescription = () => {

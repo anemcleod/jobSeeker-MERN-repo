@@ -1,9 +1,14 @@
 import {useState} from 'react';
 import { Droppable } from 'react-beautiful-dnd';
+
+import {AuthContext} from '../../context/AuthContext';
+
 import Menu from './boardMenu';
 import PinnedJob from './pinnedJob';
 
-const JobBoard = ({myJobBoard, updateBoard, setUpdateBoard, deleteJob, setDeleteJob}) => {
+const JobBoard = ({myJobBoard}) => {
+
+    
 
     const [menu, setMenu] = useState(false);
     const [showDeleteBoard, setShowDeleteBoard] = useState(false);
@@ -33,8 +38,6 @@ const JobBoard = ({myJobBoard, updateBoard, setUpdateBoard, deleteJob, setDelete
                                       boardTitle={boardTitle} 
                                       setBoardTitle={setBoardTitle}
                                       boardId={myJobBoard._id}
-                                      updateBoard={updateBoard} 
-                                      setUpdateBoard={setUpdateBoard}
                                       />
                                 <button
                                     onClick={menuToggler} 
@@ -48,8 +51,8 @@ const JobBoard = ({myJobBoard, updateBoard, setUpdateBoard, deleteJob, setDelete
                                 {
                                     myJobBoard.jobs.map((e, i )=> {
                                         return (
-                                        <PinnedJob key={e._id} job={myJobBoard.jobs[i]} index={i} deleteJob={deleteJob}
-                                        setDeleteJob={setDeleteJob} 
+                                        <PinnedJob key={e._id} job={myJobBoard.jobs[i]} index={i}
+    
                                         />
                                         )
                                     })
