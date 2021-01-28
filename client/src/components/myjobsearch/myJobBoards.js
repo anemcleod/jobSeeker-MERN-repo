@@ -69,7 +69,7 @@ const MyJobBoards = () => {
 
     return (
         <DragDropContext onDragEnd={handleDrop}>
-            
+        
             <DeleteJob />
 
             <div className="board-container minimized">

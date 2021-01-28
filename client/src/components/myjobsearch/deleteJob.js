@@ -5,21 +5,45 @@ import {AuthContext} from '../../context/AuthContext';
 
 const DeleteJob = () => {
 
-    const {deleteJob, setDeleteJob} = useContext(AuthContext);
+    const {setMyJobBoards, deleteJob, setDeleteJob} = useContext(AuthContext);
    
     const exitDeleteJobhandler = (e) => {
         if(e) {
             e.preventDefault();
         }
         setDeleteJob({showDelete: false,
-            selectedJob: ""});
+            selectedJob: "",
+            boardId: ""});
     }
     const deleteJobHandler = (e) => {
         e.preventDefault();
         JobServices.deleteJob(deleteJob.selectedJob).then(data => {
-            console.log(data);
-            exitDeleteJobhandler();
+            if(data){
+                exitDeleteJobhandler();
+            };
         })
+        setMyJobBoards(prevState => {
+            let copy =[...prevState];
+            let indexOfBoard;
+            let indexOfJob;
+            for(let i = 0; i < copy.length; i++){
+                if(copy[i]._id === deleteJob.boardId){
+                    indexOfBoard = i;
+
+                    for(let k = 0; k < copy[indexOfBoard].jobs.length; k++){
+                        if(copy[indexOfBoard].jobs[k]._id === deleteJob.selectedJob){
+                            indexOfJob = k;
+                        }
+                    }
+                }
+            }
+            copy[indexOfBoard].jobs.splice(indexOfJob, 1);
+            return copy;
+        });
+        setDeleteJob(prevState => {
+            prevState.showDelete = false;
+            return prevState;     
+        });
     }
 
 

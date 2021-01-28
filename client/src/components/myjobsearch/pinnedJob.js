@@ -15,7 +15,8 @@ const PinnedJob = ({job, index}) => {
     const openDeleteJobHandler = (e) => {
         e.preventDefault();
         setDeleteJob({showDeleteJob: true,
-        selectedJob: job._id});  
+        selectedJob: job._id,
+        boardId: job.jobBoardId});  
     }
 
     return (

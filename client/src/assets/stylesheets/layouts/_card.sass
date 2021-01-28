@@ -75,7 +75,7 @@
 .card-btn-expand
     margin: -20px auto
 
-.delete-job-background
+.delete-job-background, .pin-job-background
     position: fixed
     top: 0
     right: 0
@@ -88,11 +88,11 @@
     background-color: rgba(255, 255, 255, 0.6)
     z-index: 30
 
-.delete-job-expand
+.delete-job-expand, .pin-job-expand
     height: 100vh
     width: 100vw
 
-.delete-job-container
+.delete-job-container, .pin-job-container
     width: 300px
     min-height: 150px
     display: flex
@@ -110,19 +110,33 @@
     .seeker-exit-icon
         color: $logo-green
         font-size: 25px
+    .pin-board-title
+        margin-bottom: 15px
     .btn-menu
         align-self: flex-end
         margin: 10px
         margin-top: 15px
         background: none
         border: none
+    .btn-pin-menu
+        min-height: 40px
+        font-size: 16px
+        height: fit-content
     .btn-basic
         background-color: $logo-green
         width: 200px
     .btn-danger-active
         background-color: $red
 
+@media screen and (min-width: 500px)
+    .pin-job-container
+        width: 400px
+        .btn-pin-menu
+            width: 300px
+
 @media screen and (min-width: 800px)
     .job-container
         margin: 15px
-      
+    
+
+            

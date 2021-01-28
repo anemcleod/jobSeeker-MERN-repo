@@ -203,7 +203,8 @@ userRouter.post("/jobs", passport.authenticate('jwt',{session : false}), async (
                     if(err)
                         res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
                     else
-                        res.status(200).json({message : {msgBody : "Successfully created job", msgError : false}});
+                        res.status(200).json({message : {msgBody : "Successfully created job", msgError : false},
+                                              id: job._id});
                 });
             }
         })

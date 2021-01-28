@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 
 import {AuthContext} from '../../context/AuthContext';
 import Job from './job';
-
+import PinJobMenu from './pinMenu';
 
 
 const SearchResults = () => {
@@ -10,7 +10,7 @@ const SearchResults = () => {
 
     return (
         <div className="results-container">
-
+        <PinJobMenu/>
                 {
                 searchResults ? searchResults.map((e, i )=> {
                     return (

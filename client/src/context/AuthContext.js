@@ -13,8 +13,13 @@ export const AuthProvider = ({children}) => {
     const [myJobBoards, setMyJobBoards] = useState(null);
     const [deleteJob, setDeleteJob] = useState({
                                                     showDeleteJob: false,
-                                                    selectedJob: ""
+                                                    selectedJob: "",
+                                                    boardId: ""
                                                 })  
+    const [pinJob, setPinJob] = useState({
+                                            showPinJob: false,
+                                            selectedJob: null
+                                        })  
 
     // Load user data on mount
     useEffect(() => {
@@ -59,7 +64,9 @@ export const AuthProvider = ({children}) => {
                                             myJobBoards, 
                                             setMyJobBoards,
                                             deleteJob, 
-                                            setDeleteJob
+                                            setDeleteJob,
+                                            pinJob, 
+                                            setPinJob
                                         }}>
                 {children}
             </AuthContext.Provider>
