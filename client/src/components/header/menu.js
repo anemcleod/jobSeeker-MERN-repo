@@ -1,16 +1,19 @@
 import React, {useContext} from 'react';
-import {AuthContext} from '../../context/AuthContext';
-import AuthServices from '../../services/authServices';
 import {Link} from 'react-router-dom';
 
-
+import AuthServices from '../../services/authServices';
+import {AuthContext} from '../../context/AuthContext';
 
 const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
+   
     const {setIsLoaded, setUser, setIsAuthenticated} = useContext(AuthContext);
     
+    //show delete account button
     const revealDelete = () => {
         setShowDelete(!showDelete);
     }
+
+   //======================== manage account functions ============================== 
     const logoutHandler = (e) => {
         e.preventDefault();
         setIsLoaded({loading : true, loaded:false, message: 'Logging Out'})
@@ -39,14 +42,43 @@ const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
     return (
         <div className={menu ? "menu-container menu-container-expand" : "menu-container"}>
              <button onClick={menuToggler} className="btn-menu"><div className="seeker-exit-icon "></div></button>
+             
              <div className="menu-btn-container">
-                <Link to='/'><button onClick={menuToggler} className="btn-basic btn-menu-options">home</button></Link>
-                <Link to='/myjobsearch'><button onClick={menuToggler} className="btn-basic btn-menu-options">my job search</button></Link>
-                <button className="btn-basic btn-menu-options" onClick={logoutHandler}>logout</button>
-                <button onClick={revealDelete} className={showDelete ? "btn-basic btn-menu-options btn-danger btn-danger-active" : "btn-basic btn-menu-options btn-danger"}>{showDelete ? "cancel" : "danger"}</button>
-                { showDelete ? <button onClick={deleteAccount} className="btn-basic btn-menu-options btn-danger-active">delete account</button>
-                : null}
-                
+                <Link to='/'>
+                    <button 
+                        onClick={menuToggler} 
+                        className="btn-basic btn-menu-options">
+                        home
+                    </button>
+                </Link>
+
+                <Link to='/myjobsearch'>
+                    <button 
+                        onClick={menuToggler} 
+                        className="btn-basic btn-menu-options">
+                        my job search
+                    </button>
+                </Link>
+
+                <button 
+                    className="btn-basic btn-menu-options" 
+                    onClick={logoutHandler}>
+                    logout
+                </button>
+
+                <button 
+                    onClick={revealDelete} 
+                    className={showDelete ? "btn-basic btn-menu-options btn-danger btn-danger-active" : "btn-basic btn-menu-options btn-danger"}>
+                    {showDelete ? "cancel" : "danger"}
+                </button>
+
+                { showDelete ? (
+                        <button 
+                            onClick={deleteAccount} 
+                            className="btn-basic btn-menu-options btn-danger-active">
+                            delete account
+                        </button> ) : null 
+                }  
              </div>
         </div>
     )

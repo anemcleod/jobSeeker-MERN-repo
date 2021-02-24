@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
+
 import {AuthContext} from '../../context/AuthContext';
+
 import SearchForm from '../searchForm';
-
-
-
 
 const Home = () => {
     const {user} = useContext(AuthContext);

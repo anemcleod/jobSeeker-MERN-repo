@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {DragDropContext } from "react-beautiful-dnd";
 
 import {AuthContext} from '../../context/AuthContext';
+
 import JobBoard from './jobBoard';
 import JobServices from '../../services/jobServices';
 import DeleteJob from './deleteJob';
@@ -9,20 +10,23 @@ import DeleteJob from './deleteJob';
 
 
 const MyJobBoards = () => {
-   const {myJobBoards, setMyJobBoards, addBoard} = useContext(AuthContext);
-    
-   
 
-    const handleDrop = (e) => {
+  const {myJobBoards, setMyJobBoards, addBoard} = useContext(AuthContext);
+    
+  //when draggable has been dropped
+  const handleDrop = (e) => {
     
       if(!e.destination){
         return
       }
+
       if(e.source.index === e.destination.index && e.source.droppableId === e.destination.droppableId){
         return
       }
       
-        setMyJobBoards(prevState => {
+      //update location has changed
+      //update move in state
+      setMyJobBoards(prevState => {
           let copy = [...prevState];
           let originIndex;
           let destinationIndex;
@@ -44,6 +48,7 @@ const MyJobBoards = () => {
           return copy;
         });
 
+        //update move in database
         JobServices.moveJob(e.draggableId, e.source.droppableId, e.destination.droppableId, e.destination.index)
         .then(data =>{
           console.log(data);
@@ -53,31 +58,29 @@ const MyJobBoards = () => {
 
     return (
         <DragDropContext onDragEnd={handleDrop}>
-        
             <DeleteJob />
 
             <div className="board-container minimized">
                     {
                       myJobBoards ? myJobBoards.map((e, i)=>{
                         return (
-                          <JobBoard key={e._id} 
-                                    myJobBoard={e}
-                                    index={i}/>
+                          <JobBoard 
+                            key={e._id} 
+                            myJobBoard={e}
+                            index={i}/>
                         )
                       }) : null
                     }
+
                     <div className="btn-add-board-container">
                       <button 
-                      onClick={addBoard} 
-                      className="btn-add-board">
-                          <div className="seeker-exit-icon icon-rotate"></div>
+                        onClick={addBoard} 
+                        className="btn-add-board">
+                        <div className="seeker-exit-icon icon-rotate"></div>
                       </button>
-                    </div>
-                     
+                    </div>        
             </div>
-
          </DragDropContext>
-    
     )
 }
 

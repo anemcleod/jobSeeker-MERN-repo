@@ -6,7 +6,7 @@ import SearchForm from '../searchForm';
 import SearchResults from './searchResults';
 import Nav from './nav';
 import MyJobBoards from './myJobBoards';
-import PinJobMenu from './pinMenu';
+import Loading from '../header/loading';
 
 const MyJobSearch = () => {
     
@@ -40,14 +40,14 @@ const MyJobSearch = () => {
   }
     
     useEffect(()=> {
-        if(myJobBoards.length === 0){
-            addBoard();
-        }
-    },[pinJob])
+            if(myJobBoards && myJobBoards.length === 0){
+                addBoard();
+            }
+        },[pinJob])
 
     if(myJobBoards) {
-    return (
-    
+   
+        return (
         <div className="myjobsearch-container">
             <Nav  
                 showSearch={showSearch}
@@ -57,15 +57,28 @@ const MyJobSearch = () => {
                 showBoards={showBoards}
                 showBoardsHandler={showBoardsHandler}/>
 
-            {showSearch ? <SearchForm showResultsHandler={showResultsHandler}/> : null} 
-            {showResults ? <SearchResults/>  : null} 
-            {showBoards ? <MyJobBoards/> : null} 
+            {
+                showSearch ? (
+                    <SearchForm showResultsHandler={showResultsHandler}/>
+                    ): null
+            } 
+
+            {
+                showResults ? (
+                    <SearchResults/> 
+                    ) : null
+            } 
+
+            {
+                showBoards ? (
+                    <MyJobBoards/> 
+                ): null
+            } 
                 
-        </div>
-      
+        </div>   
     )
     }
-    return <div>loading</div>
+    return <Loading/>
 }
 
 export default MyJobSearch;

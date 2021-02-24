@@ -1,17 +1,18 @@
 import React, {useState, useContext, useEffect} from 'react';
+
 import {AuthContext} from '../../context/AuthContext';
-
-
 
 const Job = ({job, index}) => {
 
-    const {searchResults, pinJob, setPinJob, myJobBoards} = useContext(AuthContext)
+    const {searchResults, setPinJob, myJobBoards} = useContext(AuthContext)
     const [expand, setExpand] = useState(false);
     const [pinned, setPinned] = useState(false);
 
     const toggleDescription = () => {
         setExpand(!expand);
     } 
+
+    //open pin menu and add to selected job state
     const pinHandler = (index) => {
         setPinJob(
             {   
@@ -29,6 +30,8 @@ const Job = ({job, index}) => {
            });
     }
 
+    //if a job is pinned or deleted, check if it matches saved jobs
+    //if it does change pin icon to pinned icon
     useEffect(() =>{
         if(myJobBoards) {
           for(let i = 0; i < myJobBoards.length; i++){
@@ -40,7 +43,8 @@ const Job = ({job, index}) => {
               }
           }  
         }
-    },[myJobBoards])
+    },[myJobBoards]);
+
     return (
             <div className="job-container drop-shadow">
                     <button 
@@ -50,30 +54,47 @@ const Job = ({job, index}) => {
                         }}
                         className="card-btn pin-job">
                         <div className={`seeker-pin-tilt-icon ${pinned ? 'seeker-pin-icon' : ''}`}></div>
-                    </button>
-                    
+                    </button>   
 
                     <h2>{job.title.replace(/<.?strong>/g, '')}</h2>
+
                     <p className="primary-info">{job.company.display_name}</p>
                     
-
                     <div className="secondary-info">
-                        <p><span className="seeker-location-icon"></span>{job.location.display_name}</p>
-                        {job.contract_time ? <p><span className="seeker-briefcase-icon"></span>{job.contract_time.replace(/_/g, ' ')}</p> : null}
-                    </div>
-                    
+                        <p>
+                            <span className="seeker-location-icon"></span>
+                            {job.location.display_name}
+                        </p>
 
+                        {
+                            job.contract_time ? (
+                                <p>
+                                    <span className="seeker-briefcase-icon"></span>
+                                    {job.contract_time.replace(/_/g, ' ')}
+                                </p> 
+                            ): null
+                        }
+                    </div>
+                
                     <div className="tertiary-info">
                         <p>{job.created.replace(/T.*/g, '')}</p>
-                       <a target="_blank" href={job.redirect_url}><p>via link</p></a>
+
+                        <a 
+                            target="_blank" 
+                            href={job.redirect_url}>
+                            <p>via link</p>
+                        </a>
                     </div>
                     
-
                     <div className={expand ? "job-description" : "job-description hide-job-description" }>
                         {job.description.replace(/<.?strong>/g, '')}
                     </div>
                     
-                    <button onClick={toggleDescription}className="card-btn card-btn-expand"><div className={expand ? "seeker-chevron-down-icon rotate" : "seeker-chevron-down-icon"}></div></button>
+                    <button
+                        onClick={toggleDescription}
+                        className="card-btn card-btn-expand">
+                        <div className={expand ? "seeker-chevron-down-icon rotate" : "seeker-chevron-down-icon"}></div>
+                    </button>
             </div>
     )
 

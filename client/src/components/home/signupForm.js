@@ -1,9 +1,18 @@
 import React, {useState} from 'react';
+
 import AuthServices from '../../services/authServices';
+
 import Message from './message';
 
 const SignupForm = ({newVisitor, setnewVisitor}) => {
-    const [user, setUser] = useState({username: '', password: '', checkPassword: '', displayName: ''});
+    
+    const defaultUser = {
+                            username: '', 
+                            password: '', 
+                            checkPassword: '', 
+                            displayName: ''
+                        };
+    const [user, setUser] = useState(defaultUser);
     const [message, setMessage] = useState(null);
 
 
@@ -13,15 +22,18 @@ const SignupForm = ({newVisitor, setnewVisitor}) => {
     }
     
     const resetForm = () => {
-        setUser({username: '', password: '', checkPassword: '', displayName: ''});
+        setUser(defaultUser);
     }
 
+    // create account then toggle to login form
     const onSubmitHandler = e => {
         e.preventDefault();
+
         AuthServices.signup(user).then(data => {
             const {message} = data;
             setMessage(message);
             resetForm();
+
             if(!message.msgError){
                 setTimeout(()=> {
                     setnewVisitor(!newVisitor);
@@ -31,41 +43,54 @@ const SignupForm = ({newVisitor, setnewVisitor}) => {
         });
 
     }
+    
     return (
         <div>
-            <form onSubmit={onSubmitHandler} className="signup-form">
+            <form 
+                onSubmit={onSubmitHandler} 
+                className="signup-form">
+                <input 
+                    type="text" 
+                    name="username" 
+                    value={user.username}
+                    onChange={onChangeHandler}
+                    placeholder="username" 
+                    className="input-basic drop-shadow"/>
                 
-                <input type="text" 
-                        name="username" 
-                        value={user.username}
-                        onChange={onChangeHandler}
-                        placeholder="username" 
-                        className="input-basic drop-shadow"/>
+                <input 
+                    type="text" 
+                    name="displayName" 
+                    value={user.displayName}
+                    onChange={onChangeHandler}
+                    placeholder="display name" 
+                    className="input-basic drop-shadow"/>
                 
-                <input type="text" 
-                        name="displayName" 
-                        value={user.displayName}
-                        onChange={onChangeHandler}
-                        placeholder="display name" 
-                        className="input-basic drop-shadow"/>
+                <input 
+                    type="password" 
+                    name="password" 
+                    value={user.password}
+                    onChange={onChangeHandler}
+                    placeholder="password" 
+                    className="input-basic drop-shadow"/>
                 
-                <input type="password" 
-                        name="password" 
-                        value={user.password}
-                        onChange={onChangeHandler}
-                        placeholder="password" 
-                        className="input-basic drop-shadow"/>
-                
-                <input type="password" 
-                        name="checkPassword" 
-                        value={user.checkPassword}
-                        onChange={onChangeHandler}
-                        placeholder="re-enter password" 
-                        className="input-basic drop-shadow"/>
+                <input 
+                    type="password" 
+                    name="checkPassword" 
+                    value={user.checkPassword}
+                    onChange={onChangeHandler}
+                    placeholder="re-enter password" 
+                    className="input-basic drop-shadow"/>
 
-                <button type="submit" className="btn-basic drop-shadow">signup</button>
+                <button 
+                    type="submit" 
+                    className="btn-basic drop-shadow">
+                    signup
+                </button>
             </form>  
-            {message ? <Message message={message}/> : null}
+
+            {
+                message ? <Message message={message}/> : null
+            }
         </div>
         
     )

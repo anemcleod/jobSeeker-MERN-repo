@@ -1,8 +1,9 @@
 import React, {useContext, useState} from 'react';
-import {AuthContext} from '../../context/AuthContext';
-import Menu from './menu';
 import { Link } from 'react-router-dom';
 
+import {AuthContext} from '../../context/AuthContext';
+
+import Menu from './menu';
 
 const Navbar = () => {
     const {user} = useContext(AuthContext);
@@ -21,15 +22,25 @@ const Navbar = () => {
             <Link to='/'>
                 <div className="logo-container">
                     <div className="circle">{user.initial}</div>
-                    <img className="nav-logo-png" src="/jobseeker_green_logo.png" alt="logo"/> 
+                   
+                    <img 
+                        className="nav-logo-png" 
+                        src="/jobseeker_green_logo.png" 
+                        alt="logo"/> 
                 </div>
             </Link>
-            <button onClick={menuToggler} className="btn-menu"><div className="seeker-menu-icon "></div></button>
-            <Menu menuToggler={menuToggler} 
-                  menu={menu}
-                  showDelete={showDelete}
-                  setShowDelete={setShowDelete}
-            />
+
+            <button 
+                onClick={menuToggler}
+                className="btn-menu">
+                <div className="seeker-menu-icon "></div>
+            </button>
+
+            <Menu 
+                menuToggler={menuToggler} 
+                menu={menu}
+                showDelete={showDelete}
+                setShowDelete={setShowDelete}/>
         </div>
     )
 }

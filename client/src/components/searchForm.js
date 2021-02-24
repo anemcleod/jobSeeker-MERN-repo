@@ -9,27 +9,36 @@ const SearchForm = (props) => {
     const [searchParams, setSearchParams] = useState({keywords: '', location:''});
     const {setIsLoaded, setSearchResults} = useContext(AuthContext);
     
+    let quote = quotes[Math.floor(quotes.length*Math.random())];
+
     const onChangeHandler = e => {
         setSearchParams({...searchParams, [e.target.name] : e.target.value});
     }
 
-    let quote = quotes[Math.floor(quotes.length*Math.random())];
-
+    //submit search request
     const submitHandler = e => {
         e.preventDefault();
+
+        //clear out previous search results
         setSearchResults(null);
+
         setIsLoaded({loading : true, loaded: false, message: quote})
+        
+        //request data from Adzuna api via app's server
         SearchServices.search(searchParams).then(data => {
             setIsLoaded({loading : false, loaded:true, message: ''})
             if(data){
                 const {results} = data
                 setSearchResults(results);
             }
-        })
+        });
+
+        //if homepage go to myjobsearch page
         if(props.location.pathname === "/"){
            props.history.push("/myjobsearch");
         }
 
+        //toggle to search results on myjobsearch page
         if(props.location.pathname === "/myjobsearch"){
             props.showResultsHandler();
          }

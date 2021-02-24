@@ -6,20 +6,20 @@ const Nav = ({showSearch, showSearchHandler, showResults, showResultsHandler, sh
     const [mobile, setMobile] = useState(false);
     const [width, setWidth] = useState(window.innerWidth);
 
-  
-
+    //check screensize to switch btwn mobile and large menu
     useEffect(()=>{
-     window.addEventListener('resize', () => {
-        setWidth(window.innerWidth);
+        window.addEventListener('resize', () => {
+            setWidth(window.innerWidth);
     });
 
-     return (
-         () => {
+    //remove listener when component unmounts
+    return (
+        () => {
              window.removeEventListener('resize', () => {
                 setWidth(window.innerWidth);
             })
-            }
-        )
+        })
+
     }, []);
 
     useEffect(()=>{
@@ -39,6 +39,7 @@ const Nav = ({showSearch, showSearchHandler, showResults, showResultsHandler, sh
                 className={mobile ? `btn-basic btn-mobile drop-shadow ${showResults ? 'active': ''}` : `btn-basic drop-shadow ${showResults ? 'active': ''}`}>
                 {mobile ? <div className="seeker-list-icon"></div> : 'Search Results'}
             </button> 
+            
            <button 
                 onClick={showBoardsHandler} 
                 className={mobile ? `btn-basic btn-mobile drop-shadow ${showBoards ? 'active': ''}` : `btn-basic drop-shadow ${showBoards ? 'active': ''}`}>

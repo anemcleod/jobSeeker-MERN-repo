@@ -1,9 +1,12 @@
 import React, {useState, useContext} from 'react';
+
 import {AuthContext} from '../../context/AuthContext';
 import AuthServices from '../../services/authServices';
+
 import Message from './message';
 
 const LoginForm = () => {
+
     const [user, setUser] = useState({username: '', password: ''});
     const [message, setMessage] = useState(null);
     const authContext = useContext(AuthContext);
@@ -13,8 +16,10 @@ const LoginForm = () => {
         setUser({...user, [e.target.name] : e.target.value});
     }
 
+    // log into account
     const onSubmitHandler = e => {
         e.preventDefault();
+
         AuthServices.login(user).then(data => {
             const {user, isAuthenticated, message} = data;
             if(isAuthenticated){
@@ -28,7 +33,9 @@ const LoginForm = () => {
     }
     return (
         <div>
-            <form onSubmit={onSubmitHandler} className="login-form">
+            <form 
+                onSubmit={onSubmitHandler} 
+                className="login-form">
                 
                 <input type="text" 
                         name="username" 
@@ -42,9 +49,16 @@ const LoginForm = () => {
                         placeholder="password" 
                         className="input-basic drop-shadow"/>
 
-                <button type="submit" className="btn-basic drop-shadow">login</button>
+                <button 
+                    type="submit" 
+                    className="btn-basic drop-shadow">
+                    login
+                </button>
             </form>  
-            {message ? <Message message={message}/> : null}
+            
+            {
+                message ? <Message message={message}/> : null
+            }
         </div>
         
     )
