@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 
+import {AuthContext} from '../../context/AuthContext';
 
 import SearchForm from '../searchForm';
-import MyJobBoards from './myJobBoards';
 import SearchResults from './searchResults';
 import Nav from './nav';
+import MyJobBoards from './myJobBoards';
+import PinJobMenu from './pinMenu';
 
 const MyJobSearch = () => {
     
@@ -12,7 +14,8 @@ const MyJobSearch = () => {
     const [showResults, setShowResults] = useState(true);
     const [showBoards, setShowBoards] = useState(false);
    
-   
+    const {myJobBoards, addBoard, pinJob} = useContext(AuthContext);
+
     const showResultsHandler = (e) =>{
       if(e) {
         e.preventDefault();
@@ -36,8 +39,13 @@ const MyJobSearch = () => {
       setShowBoards(true);
   }
     
+    useEffect(()=> {
+        if(myJobBoards.length === 0){
+            addBoard();
+        }
+    },[pinJob])
 
-
+    if(myJobBoards) {
     return (
     
         <div className="myjobsearch-container">
@@ -56,6 +64,8 @@ const MyJobSearch = () => {
         </div>
       
     )
+    }
+    return <div>loading</div>
 }
 
 export default MyJobSearch;

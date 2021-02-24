@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {AuthContext} from '../../context/AuthContext';
 import JobServices from '../../services/jobServices';
 
-const Menu = ({menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitle, setBoardTitle, boardId}) => {
+const Menu = ({index, menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitle, setBoardTitle, boardId}) => {
     
     const {setMyJobBoards} = useContext(AuthContext);
     
@@ -31,6 +31,11 @@ const Menu = ({menuToggler, menu, showDeleteBoard, setShowDeleteBoard, boardTitl
     const saveChangesHandler = (e) => {
         e.preventDefault();
         menuToggler();
+        setMyJobBoards(prevState => {
+            prevState[index].title = boardTitle.title;
+            return prevState     
+        });
+
         JobServices.updateBoardTitle( boardId, boardTitle).then(data => {
             if(!data){
                 console.log("that didn't work");

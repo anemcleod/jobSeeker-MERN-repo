@@ -9,26 +9,10 @@ import DeleteJob from './deleteJob';
 
 
 const MyJobBoards = () => {
-   const {myJobBoards, setMyJobBoards} = useContext(AuthContext);
+   const {myJobBoards, setMyJobBoards, addBoard} = useContext(AuthContext);
     
    
-  const addBoard = (e) =>{
-    e.preventDefault();
-    JobServices.createJobBoard({title: "Job Board"}).then(data => {
-        if(data) {
-            setMyJobBoards(prevState => {
-              let copy = [...prevState]
-              copy.push({
-                _id: data.id,
-                title: "Job Board",
-                jobs: []
-              });
-                return copy;
-            });
-        }
-  });
-}
-    
+
     const handleDrop = (e) => {
     
       if(!e.destination){
@@ -74,10 +58,11 @@ const MyJobBoards = () => {
 
             <div className="board-container minimized">
                     {
-                      myJobBoards ? myJobBoards.map((e)=>{
+                      myJobBoards ? myJobBoards.map((e, i)=>{
                         return (
                           <JobBoard key={e._id} 
-                                    myJobBoard={e}/>
+                                    myJobBoard={e}
+                                    index={i}/>
                         )
                       }) : null
                     }

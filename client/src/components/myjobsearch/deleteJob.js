@@ -19,7 +19,7 @@ const DeleteJob = () => {
         e.preventDefault();
         JobServices.deleteJob(deleteJob.selectedJob).then(data => {
             if(data){
-                exitDeleteJobhandler();
+               console.log(data);
             };
         })
         setMyJobBoards(prevState => {
@@ -44,6 +44,7 @@ const DeleteJob = () => {
             prevState.showDelete = false;
             return prevState;     
         });
+        exitDeleteJobhandler();
     }
 
 

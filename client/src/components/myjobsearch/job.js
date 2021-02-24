@@ -1,17 +1,20 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {AuthContext} from '../../context/AuthContext';
+
+
 
 const Job = ({job, index}) => {
 
-    const {searchResults, pinJob, setPinJob} = useContext(AuthContext)
+    const {searchResults, pinJob, setPinJob, myJobBoards} = useContext(AuthContext)
     const [expand, setExpand] = useState(false);
+    const [pinned, setPinned] = useState(false);
 
     const toggleDescription = () => {
         setExpand(!expand);
     } 
     const pinHandler = (index) => {
         setPinJob(
-            {
+            {   
                 showPinJob: true,
                 selectedJob:  {
                                 jobBoardId: null,
@@ -25,15 +28,28 @@ const Job = ({job, index}) => {
                             } 
            });
     }
+
+    useEffect(() =>{
+        if(myJobBoards) {
+          for(let i = 0; i < myJobBoards.length; i++){
+              for(let k = 0; k < myJobBoards[i].jobs.length; k++){
+                  if(myJobBoards[i].jobs[k].title === job.title && myJobBoards[i].jobs[k].company === job.company.display_name){
+                      setPinned(true);
+                      return
+                  }
+              }
+          }  
+        }
+    },[myJobBoards])
     return (
             <div className="job-container drop-shadow">
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        pinHandler(index);
-                    }
-                    }
-                            className="card-btn pin-job">
-                        <div className="seeker-pin-tilt-icon"></div>
+                    <button 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            pinHandler(index);
+                        }}
+                        className="card-btn pin-job">
+                        <div className={`seeker-pin-tilt-icon ${pinned ? 'seeker-pin-icon' : ''}`}></div>
                     </button>
                     
 

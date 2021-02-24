@@ -1,6 +1,8 @@
 import React, {createContext, useState, useEffect} from 'react';
+
 import AuthServices from '../services/authServices';
 import JobServices from '../services/jobServices';
+
 
 export const AuthContext = createContext();
 
@@ -28,10 +30,12 @@ export const AuthProvider = ({children}) => {
             setUser(data.user);
             setIsAuthenticated(data.isAuthenticated);
             if(isAuthenticated) {
+            setIsLoaded({loading : true, loaded: false, message: ''})
                JobServices.populate().then(data => {
                     if(data) {
                     setMyJobBoards(data.jobBoards)
                     }
+                    setIsLoaded({loading : true, loaded: false, message: ''})
                 });
             }
             setIsLoaded({loading: false, loaded: true, message: ''});
@@ -39,8 +43,7 @@ export const AuthProvider = ({children}) => {
     }, []);
 
 
-    useEffect(() => {
-           
+    useEffect(() => { 
         JobServices.populate().then(data => {
             if(data) {
             setMyJobBoards(data.jobBoards)
@@ -49,6 +52,25 @@ export const AuthProvider = ({children}) => {
  
     }, [isAuthenticated]);
 
+    // global functions
+    const addBoard = (e) =>{
+        if(e) {
+            e.preventDefault();
+        }
+        JobServices.createJobBoard({title: "Job Board"}).then(data => {
+            if(data) {
+                setMyJobBoards(prevState => {
+                  let copy = [...prevState]
+                  copy.push({
+                    _id: data.id,
+                    title: "Job Board",
+                    jobs: []
+                  });
+                    return copy;
+                });
+            }
+      });
+    }
 
     return (
         <div>
@@ -66,7 +88,8 @@ export const AuthProvider = ({children}) => {
                                             deleteJob, 
                                             setDeleteJob,
                                             pinJob, 
-                                            setPinJob
+                                            setPinJob,
+                                            addBoard
                                         }}>
                 {children}
             </AuthContext.Provider>

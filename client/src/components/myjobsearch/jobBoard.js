@@ -6,7 +6,7 @@ import {AuthContext} from '../../context/AuthContext';
 import Menu from './boardMenu';
 import PinnedJob from './pinnedJob';
 
-const JobBoard = ({myJobBoard}) => {
+const JobBoard = ({myJobBoard, index}) => {
 
     
 
@@ -38,6 +38,7 @@ const JobBoard = ({myJobBoard}) => {
                                       boardTitle={boardTitle} 
                                       setBoardTitle={setBoardTitle}
                                       boardId={myJobBoard._id}
+                                      index={index}
                                       />
                                 <button
                                     onClick={menuToggler} 

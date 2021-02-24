@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react';
-import SearchServices from '../services/searchServices';
-import {AuthContext} from '../context/AuthContext';
 import { withRouter } from 'react-router-dom';
 
+import SearchServices from '../services/searchServices';
+import {AuthContext} from '../context/AuthContext';
+import quotes from '../context/inspiration';
 
 const SearchForm = (props) => {
     const [searchParams, setSearchParams] = useState({keywords: '', location:''});
@@ -12,11 +13,12 @@ const SearchForm = (props) => {
         setSearchParams({...searchParams, [e.target.name] : e.target.value});
     }
 
+    let quote = quotes[Math.floor(quotes.length*Math.random())];
 
     const submitHandler = e => {
         e.preventDefault();
         setSearchResults(null);
-        setIsLoaded({loading : true, loaded: false, message: 'searching for jobs'})
+        setIsLoaded({loading : true, loaded: false, message: quote})
         SearchServices.search(searchParams).then(data => {
             setIsLoaded({loading : false, loaded:true, message: ''})
             if(data){
@@ -43,16 +45,18 @@ const SearchForm = (props) => {
                 className="input-basic drop-shadow"
                 onChange={onChangeHandler}/>
 
-            <input type="text" 
-                   name="location"  
-                   placeholder="city or state" 
-                   className="input-basic drop-shadow"
-                   onChange={onChangeHandler}/>
+            <input 
+                type="text" 
+                name="location"  
+                placeholder="city or state" 
+                className="input-basic drop-shadow"
+                onChange={onChangeHandler}/>
 
-            <button onClick={submitHandler} 
-                    type="submit" 
-                    className="btn-basic drop-shadow">
-                    search
+            <button 
+                onClick={submitHandler} 
+                type="submit" 
+                className="btn-basic drop-shadow">
+                search
             </button>
         </form>
 
