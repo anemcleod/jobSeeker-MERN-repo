@@ -13,7 +13,7 @@ const SearchResults = () => {
             <PinJobMenu/>
 
             {
-                (searchResults && searchResults.length === 0) ? (
+                (!searchResults || (searchResults && searchResults.length) === 0) ? (
                         <div className="no-results" >
                             No results found. Try using broader search terms.
                         </div>

@@ -3,6 +3,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const User = require('./models/userModel');
 
+require('dotenv').config();
+
+let secret = process.env.JWT_SECRET;
 
 const cookieExtractor = req =>{
     let token = null;
@@ -16,7 +19,7 @@ const cookieExtractor = req =>{
 
 passport.use(new JwtStrategy({
     jwtFromRequest : cookieExtractor,
-    secretOrKey : "haha"
+    secretOrKey : secret
 }, async (payload,done)=>{
    try{
         await User.findById({_id : payload.sub},(err,user)=>{

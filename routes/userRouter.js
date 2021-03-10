@@ -6,14 +6,15 @@ const JWT = require('jsonwebtoken');
 const JobBoard = require("../models/jobboardModel");
 const Job = require("../models/jobModel");
 
+require('dotenv').config();
 
-
+let secret = process.env.JWT_SECRET;
 
 const signToken = userID =>{
     return JWT.sign({
         iss : "Jobseeker",
         sub : userID
-    },"haha",{expiresIn : "24h"});
+    },secret ,{expiresIn : "24h"});
 }
 
 userRouter.post('/signup', async function(req, res){
@@ -76,7 +77,7 @@ userRouter.post('/signup', async function(req, res){
 
 userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
     if(req.isAuthenticated()){
-       const {_id,username, displayName, initial} = req.user;
+       const {_id, username, displayName, initial} = req.user;
        const token = signToken(_id);
        res.cookie('access_token',token,{httpOnly: true, sameSite:true}); 
        res.status(200).json({isAuthenticated : true, user : {username, displayName, initial}});
@@ -98,7 +99,7 @@ userRouter.delete("/delete", passport.authenticate('jwt',{session : false}), asy
           await JobBoard.findByIdAndDelete(board);
       }
       const deletedUser = await User.findByIdAndDelete(req.user);
-      res.status(200).json({deleted: deletedUser, user:{username : "", displayName : "", initial : ""}, message : {msgBody: "We're sorry to see you go", msgError: false}});
+      res.status(200).json({deleted: deletedUser, user:{username : "", displayName : "", initial : ""}, message : {msgBody: "We're sorry to see you go!", msgError: false}});
     } catch (err) {
       res.status(500).json({message : {msgBody: err.message, msgError: true}});
     }
@@ -144,7 +145,9 @@ userRouter.put("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session : f
     try {
         await JobBoard.findOneAndUpdate({_id: req.params.jobBoardId}, {title: req.body.title}, {new: true}, (err, doc) => {
             if(!err){
-                res.status(200);
+                res.status(200).json({message : {
+                    msgBody: 'job board updated', 
+                    msgError: false}});;
             }
 
         });
@@ -167,7 +170,13 @@ userRouter.delete("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session 
 
       const deletedJobBoard = await JobBoard.findByIdAndDelete(req.params.jobBoardId);
       const UpdatedUser = await User.updateOne({"_id" : req.user } ,{ "$pull": {  "jobBoards": req.params.jobBoardId } }, { multi: true });
-      res.status(200).json({"deleted":deletedJobBoard,"updated":UpdatedUser });
+      res.status(200).json({
+                            deleted:deletedJobBoard,
+                            updated:UpdatedUser,
+                            message : {
+                                msgBody: 'board deleted', 
+                                msgError: false} 
+                            });
     } catch (err) {
       res.status(500).json({message : {
           msgBody: err.message, 
@@ -195,13 +204,13 @@ userRouter.post("/jobs", passport.authenticate('jwt',{session : false}), async (
                             });
         await job.save(async (err) => {
             if(err){
-                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+                res.status(500).json({message : {msgBody : "An error has occured", msgError: true}});
             } else {
                 const jobBoard = await JobBoard.findById(job.jobBoardId);
                 jobBoard.jobs.push(job);
                 await jobBoard.save(err=>{
                     if(err)
-                        res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+                        res.status(500).json({message : {msgBody : "An Errror has occured", msgError: true}});
                     else
                         res.status(200).json({message : {msgBody : "Successfully created job", msgError : false},
                                               id: job._id});
@@ -248,7 +257,14 @@ userRouter.delete("/jobs/:jobId", passport.authenticate('jwt',{session : false})
         const job = await Job.findById(req.params.jobId);
         const updatedJobBoard = await JobBoard.findOneAndUpdate({"_id": job.jobBoardId}, { "$pull": {  "jobs": req.params.jobId } }, { multi: true });
         const deletedJob = await Job.findByIdAndDelete(req.params.jobId);
-        res.status(200).json(deletedJob).json(updatedJobBoard);
+        res.status(200).json({
+            deletedJob: deletedJob,
+            updatedJobBoard: updatedJobBoard,
+            message: {
+            msgBody: 'job deleted', 
+            msgError: false
+            }
+    });
     } catch (err) {
         res.status(500).json({message: {
             msgBody: err.message, 

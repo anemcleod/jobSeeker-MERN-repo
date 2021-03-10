@@ -22,8 +22,8 @@ const Menu = ({index, menuToggler, menu, showDeleteBoard, setShowDeleteBoard, bo
 
         //remove from database
         JobServices.deleteJobBoard(boardId).then(data => {
-            if(!data){
-                console.log("something went wrong");
+            if(data.message.msgError){
+                alert(data.message.msgBody);
             }
         });
     }
@@ -46,8 +46,8 @@ const Menu = ({index, menuToggler, menu, showDeleteBoard, setShowDeleteBoard, bo
 
         //update title in database
         JobServices.updateBoardTitle( boardId, boardTitle).then(data => {
-            if(!data){
-                console.log("that didn't work");
+            if(data.message.msgError){
+                alert(data.message.msgBody);
             }
         });
     }

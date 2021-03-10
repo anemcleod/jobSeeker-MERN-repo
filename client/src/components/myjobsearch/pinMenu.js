@@ -5,7 +5,7 @@ import {AuthContext} from '../../context/AuthContext';
 
 const PinJobMenu = () => {
 
-    const {myJobBoards, setMyJobBoards, pinJob, setPinJob} = useContext(AuthContext)
+    const {myJobBoards, setMyJobBoards, pinJob, setPinJob, setIsLoaded} = useContext(AuthContext)
     
     //close pin menu and capture selected job
     const exitPinMenuHandler = (e) => {
@@ -22,9 +22,14 @@ const PinJobMenu = () => {
     const pinToBoardHandler = (id, i) => {
         let jobCopy = {...pinJob.selectedJob};
         jobCopy.jobBoardId = id;
-
+        setIsLoaded({loading: true, loaded: false, message: 'pinning'});
         //add job to database
         JobServices.createJob(jobCopy).then(data => {
+            if(data.message.msgError){
+                setIsLoaded({loading: false, loaded: true, message: ''});
+                alert(data.message.msgBody);
+                return
+            }
             if(data){
                 //add to state - have to wait for database to get id
                 setMyJobBoards( prevState=> {
@@ -34,6 +39,7 @@ const PinJobMenu = () => {
                     return copy;
                 })
                 exitPinMenuHandler();
+                setIsLoaded({loading: false, loaded: true, message: ''});
             }
         }) 
     }

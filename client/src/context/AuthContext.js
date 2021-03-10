@@ -30,12 +30,10 @@ export const AuthProvider = ({children}) => {
             setUser(data.user);
             setIsAuthenticated(data.isAuthenticated);
             if(isAuthenticated) {
-            setIsLoaded({loading : true, loaded: false, message: ''})
                JobServices.populate().then(data => {
                     if(data) {
                     setMyJobBoards(data.jobBoards)
                     }
-                    setIsLoaded({loading : true, loaded: false, message: ''})
                 });
             }
             setIsLoaded({loading: false, loaded: true, message: ''});
@@ -58,6 +56,10 @@ export const AuthProvider = ({children}) => {
             e.preventDefault();
         }
         JobServices.createJobBoard({title: "Job Board"}).then(data => {
+            if(data.message.msgError){
+                 alert(data.message.msgBody);
+                 return
+            }
             if(data) {
                 setMyJobBoards(prevState => {
                   let copy = [...prevState]

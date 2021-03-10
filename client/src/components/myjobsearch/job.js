@@ -81,6 +81,7 @@ const Job = ({job, index}) => {
 
                         <a 
                             target="_blank" 
+                            rel="noreferrer"
                             href={job.redirect_url}>
                             <p>via link</p>
                         </a>

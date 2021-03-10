@@ -51,7 +51,9 @@ const MyJobBoards = () => {
         //update move in database
         JobServices.moveJob(e.draggableId, e.source.droppableId, e.destination.droppableId, e.destination.index)
         .then(data =>{
-          console.log(data);
+          if(data.message.msgError){
+            alert(data.message.msgBody);
+          };
         })
       
   }

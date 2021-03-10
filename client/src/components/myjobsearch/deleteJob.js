@@ -22,8 +22,8 @@ const DeleteJob = () => {
 
         //remove from database
         JobServices.deleteJob(deleteJob.selectedJob).then(data => {
-            if(data){
-               console.log(data);
+            if(data.message.msgError){
+               alert(data.message.msgBody);
             };
         })
 

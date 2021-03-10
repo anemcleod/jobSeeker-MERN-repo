@@ -1,13 +1,20 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import AuthServices from '../../services/authServices';
 import {AuthContext} from '../../context/AuthContext';
 
+import Message from '../home/message'
+
 const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
    
     const {setIsLoaded, setUser, setIsAuthenticated} = useContext(AuthContext);
     
+    const [displayMessage, setDisplayMessage] = useState({
+                                                           display: false,
+                                                           message: {} 
+                                                        });
+
     //show delete account button
     const revealDelete = () => {
         setShowDelete(!showDelete);
@@ -28,6 +35,10 @@ const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
     const deleteAccount = (e) => {
         e.preventDefault();
             AuthServices.deleteUser().then(data =>{
+            setDisplayMessage({
+                display: true,
+                message: data.message 
+             });
             if(!data.message.msgError){
                 
                 setTimeout(() => {
@@ -78,8 +89,15 @@ const Menu = ({menu, menuToggler, showDelete, setShowDelete}) => {
                             className="btn-basic btn-menu-options btn-danger-active">
                             delete account
                         </button> ) : null 
+                }
+
+                {
+                    displayMessage.display ? (
+                        <Message message={displayMessage.message}/>
+                    ): null
                 }  
              </div>
+             
         </div>
     )
 
