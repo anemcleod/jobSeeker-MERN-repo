@@ -18,3 +18,7 @@ The user can drag and drop saved jobs to reorganize the selected board or move t
 - express
 - mongoDBAtlas
 - adzuna developer API
+
+## Please note
+
+API keys for MongoDB Atlas and adzuna as well as JWt secrets have been saved as environment variables and are not accessible in this public repo
