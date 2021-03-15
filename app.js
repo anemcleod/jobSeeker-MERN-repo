@@ -1,4 +1,6 @@
 const express = require('express');
+//uncopy for production build
+//const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -24,8 +26,18 @@ db.once('open', function() {
 });
 
 
-app.use('/user', userRouter);
-app.use('/search', searchRouter);
+// Have Node serve the files for our built React app
+//uncopy for production build
+// app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+app.use('/api/user', userRouter);
+app.use('/api/search', searchRouter);
+
+// All other GET requests not handled before will return our React app
+//uncopy for production build
+  // app.get('*', (req, res) => {
+  //   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  // });
 
 
 //listen on port

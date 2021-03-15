@@ -1,6 +1,6 @@
 const SearchServices = {
     search : (searchParams) => {
-        return fetch('/search', {
+        return fetch('/api/search', {
             method: 'post',
             body : JSON.stringify(searchParams),
             headers : {
