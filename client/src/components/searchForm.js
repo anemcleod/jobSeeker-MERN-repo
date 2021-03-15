@@ -27,7 +27,7 @@ const SearchForm = (props) => {
         //request data from Adzuna api via app's server
         SearchServices.search(searchParams).then(data => {
             setIsLoaded({loading : false, loaded:true, message: ''})
-            if(data.message.msgError){
+            if(data.message){
                 alert(data.message.msgBody);
                 return
             }
