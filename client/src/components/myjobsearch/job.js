@@ -47,14 +47,20 @@ const Job = ({job, index}) => {
 
     return (
             <div className="job-container drop-shadow">
+                {
+                    pinned ? <div className="seeker-pin-icon"></div> :
+                    (
                     <button 
                         onClick={(e) => {
                             e.preventDefault();
                             pinHandler(index);
                         }}
                         className="card-btn pin-job">
-                        <div className={`seeker-pin-tilt-icon ${pinned ? 'seeker-pin-icon' : ''}`}></div>
-                    </button>   
+                        <div className="seeker-pin-tilt-icon"></div>
+                     </button>
+                     )
+                }
+                     
 
                     <h2>{job.title.replace(/<.?strong>/g, '')}</h2>
 
