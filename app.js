@@ -1,5 +1,5 @@
 const express = require('express');
-//uncopy for production build
+//uncomment for production build
 //const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
@@ -27,16 +27,16 @@ db.once('open', function() {
 
 
 // Have Node serve the files for our built React app
-//uncopy for production build
-// app.use(express.static(path.resolve(__dirname, '../client/build')));
+//uncomment for production build
+// app.use(express.static(path.resolve(__dirname, './client/build')));
 
 app.use('/api/user', userRouter);
 app.use('/api/search', searchRouter);
 
 // All other GET requests not handled before will return our React app
-//uncopy for production build
+//uncomment for production build
   // app.get('*', (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  //   res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
   // });
 
 
