@@ -1,6 +1,6 @@
 const searchRouter = require('express').Router();
 const passport = require('passport');
-const passportConfig = require('../passport');
+// const passportConfig = require('../passport');
 const axios = require('axios');
 
 require('dotenv').config(); 
