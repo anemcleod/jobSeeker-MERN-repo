@@ -1,7 +1,7 @@
 const searchRouter = require('express').Router();
 const passport = require('passport');
-// const passportConfig = require('../passport');
 const axios = require('axios');
+const response = require('./utils/response');
 
 require('dotenv').config(); 
 
@@ -17,9 +17,6 @@ searchRouter.post("/", passport.authenticate('jwt',{session : false}), async (re
         const request = await axios.get(`${baseUrl}&what=${keywords}&where=${location}`)
         res.send(request.data);
     } catch (err) {
-        res.status(500).json({message: {
-            msgBody: err.message, 
-            msgError: true
-        }})
+        response(res, 500, true, err.message);
     }   
 });

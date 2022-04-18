@@ -5,6 +5,7 @@ const passportConfig = require('../passport');
 const JWT = require('jsonwebtoken');
 const JobBoard = require("../models/jobboardModel");
 const Job = require("../models/jobModel");
+const response = require('./utils/response');
 
 require('dotenv').config();
 
@@ -22,30 +23,22 @@ userRouter.post('/signup', async function(req, res){
         const {username, password, checkPassword, displayName} = req.body;
         
         if(!username || !password || !checkPassword){
-            res.status(406).json({message: {
-                                    msgBody: "Not all fields have been entered",
-                                    msgError: true}});
+            response(res, 406, true, "Not all fields have been entered");
             return;
         }
         if(password.length < 5){
-            res.status(406).json({message: {
-                msgBody: "Password must be at least 5 characters",
-                msgError: true}});
+            response(res, 406, true, "Password must be at least 5 characters");
             return;
         }
 
         if(password !== checkPassword){
-            res.status(406).json({message: {
-                msgBody: "Password and check password does not match",
-                msgError: true}});
+            response(res, 406, true, "Password and check password does not match");
             return;
         }
 
         const existingUser = await User.findOne({username: username});
         if(existingUser){
-            res.status(406).json({message: {
-                msgBody: "This user alreay exists",
-                msgError: true}});
+            response(res, 406, true, "This user alreay exists");
             return;
         } else {
             const newUser = new User({
@@ -54,25 +47,17 @@ userRouter.post('/signup', async function(req, res){
                 displayName
             });
             
-        await newUser.save(err => {
-            if(err){
-                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
-            } else {
-                res.status(201).json({message : {msgBody : "Account successfully created", msgError: false}});
-            }
-        });
-            
-           
+            await newUser.save(err => {
+                if(err){
+                    response(res, 500, true, "Error has occured");
+                } else {
+                    response(res, 201, true, "This user alreay exists");
+                }
+            });   
         }
-
-
     } catch (err){
-        res.status(500).json({message: {
-            msgBody: "Something went wrong",
-            msgError: true}});
+        response(res, 500, true, "Something went wrong");
       }
-    
-    
 });
 
 userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
@@ -101,7 +86,7 @@ userRouter.delete("/delete", passport.authenticate('jwt',{session : false}), asy
       const deletedUser = await User.findByIdAndDelete(req.user);
       res.status(200).json({deleted: deletedUser, user:{username : "", displayName : "", initial : ""}, message : {msgBody: "We're sorry to see you go!", msgError: false}});
     } catch (err) {
-      res.status(500).json({message : {msgBody: err.message, msgError: true}});
+        response(res, 500, true, err.message);
     }
   });
 
@@ -120,42 +105,32 @@ userRouter.post('/jobBoard',passport.authenticate('jwt',{session : false}), asyn
         const jobBoard = new JobBoard(req.body);
         await jobBoard.save( async err=>{
             if(err)
-                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+                response(res, 500, true, err.message);
             else{
                 req.user.jobBoards.push(jobBoard);
                 await req.user.save(err=>{
                     if(err)
-                        res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
+                    response(res, 500, true, err.message);
                     else
                         res.status(200).json({message : {msgBody : "Successfully created jobBoard", msgError : false},
                         id :  jobBoard._id});
                 });
             }
         })
-    } catch (err){
-        res.status(500).json({message: {
-            errMsg: "something went wrong",
-            errBdy: true}});
-      }
-    
-   
+    }catch(err) {
+        response(res, 500, true, err.message);
+    }
 });
 
 userRouter.put("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session : false}), async (req, res) => {
     try {
         await JobBoard.findOneAndUpdate({_id: req.params.jobBoardId}, {title: req.body.title}, {new: true}, (err, doc) => {
             if(!err){
-                res.status(200).json({message : {
-                    msgBody: 'job board updated', 
-                    msgError: false}});;
+                response(res, 200, false, 'job board updated');
             }
-
-        });
-        
+        });      
     } catch (err) {
-      res.status(500).json({message : {
-          msgBody: err.message, 
-          msgError: true}});
+        response(res, 500, true, err.message); 
     }
   });
 
@@ -178,9 +153,7 @@ userRouter.delete("/jobBoard/:jobBoardId", passport.authenticate('jwt',{session 
                                 msgError: false} 
                             });
     } catch (err) {
-      res.status(500).json({message : {
-          msgBody: err.message, 
-          msgError: true}});
+        response(res, 500, true, err.message);
     }
   });
 
@@ -204,13 +177,13 @@ userRouter.post("/jobs", passport.authenticate('jwt',{session : false}), async (
                             });
         await job.save(async (err) => {
             if(err){
-                res.status(500).json({message : {msgBody : "An error has occured", msgError: true}});
+                response(res, 500, true, err.message);
             } else {
                 const jobBoard = await JobBoard.findById(job.jobBoardId);
                 jobBoard.jobs.push(job);
                 await jobBoard.save(err=>{
                     if(err)
-                        res.status(500).json({message : {msgBody : "An Errror has occured", msgError: true}});
+                    response(res, 500, true, err.message);
                     else
                         res.status(200).json({message : {msgBody : "Successfully created job", msgError : false},
                                               id: job._id});
@@ -219,10 +192,7 @@ userRouter.post("/jobs", passport.authenticate('jwt',{session : false}), async (
         })
 
     } catch (err) {
-        res.status(500).json({message: {
-            msgBody: err.message, 
-            msgError: true
-        }})
+        response(res, 500, true, err.message);
     }
 });
 
@@ -231,24 +201,24 @@ userRouter.put("/jobs/:jobId", passport.authenticate('jwt',{session : false}), a
         await JobBoard.findOneAndUpdate({_id: req.body.oldJobBoardId}, { "$pull": {  "jobs": req.params.jobId } }, { multi: true });
         await Job.findOneAndUpdate({_id: req.params.jobId}, {jobBoardId: req.body.newJobBoardId}, {new: true}, async (err, doc) => {
             if(err){
-                res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});;
+                response(res, 500, true, err.message);
             } else{
                 const jobBoard = await JobBoard.findById(doc.jobBoardId);
                 jobBoard.jobs.splice(req.body.destinationIndex, 0, doc);
                 await jobBoard.save(err=>{
-                    if(err)
-                        res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
-                    else
-                        res.status(200).json({message : {msgBody : "Successfully moved job", msgError : false}});
+                    if(err) {
+                        response(res, 500, true, err.message);
+                    }    
+                    else {
+                        response(res, 200, false, "Successfully moved job");
+                    }
                 })
             }
 
         });
         
     } catch (err) {
-      res.status(500).json({message : {
-          msgBody: err.message, 
-          msgError: true}});
+        response(res, 500, true, err.message);
     }
   });
 
@@ -266,10 +236,7 @@ userRouter.delete("/jobs/:jobId", passport.authenticate('jwt',{session : false})
             }
     });
     } catch (err) {
-        res.status(500).json({message: {
-            msgBody: err.message, 
-            msgError: true
-        }})
+        response(res, 500, true, err.message);
     }   
 });
 
@@ -281,10 +248,7 @@ userRouter.get("/jobs", passport.authenticate('jwt',{session : false}), async (r
         });
         res.status(200).json(jobs);
     }catch (err) {
-        res.status(500).json({message: {
-            msgBody: err.message, 
-            msgError: true
-        }})
+        response(res, 500, true, err.message);
     }   
 });
 
